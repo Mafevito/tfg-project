@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import { clientsupabase } from "../supabase/client";
 
-function Login() {
+function LoginPage() {
   // Estado que va a guardar el correo. Inicialmente va a estar vacio
   const [email, setEmail] = useState("");
 
@@ -50,4 +50,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
