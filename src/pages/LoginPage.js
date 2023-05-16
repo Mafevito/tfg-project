@@ -3,11 +3,12 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
-import { clientsupabase } from "../supabase/client";
+import { clientsupabase } from "../supabase/supabase";
 
 function LoginPage() {
   // Estado que va a guardar el correo. Inicialmente va a estar vacio
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // Funcion a la que se llama cuando se hace clic en "Enviar"
   const handleSubmit = async (e) => {
@@ -15,9 +16,10 @@ function LoginPage() {
     console.log(email);
 
     try {
-      // Llama a la funcion de signIn de Supabase
-      const result = await clientsupabase.auth.signInWithOtp({
+      // Llama a la funcion de 'signInWithPassword' de Supabase
+      const result = await clientsupabase.auth.signInWithPassword({
         email: email,
+        password: password,
       });
 
       console.log(result);
@@ -30,20 +32,27 @@ function LoginPage() {
     <Container>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             name="email"
             placeholder="Introduce tu email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Contraseña</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Introduce tu contraseña"
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Enviar
+          Iniciar sesión
         </Button>
       </Form>
     </Container>

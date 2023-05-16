@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
-import { clientsupabase } from "../supabase/client";
+import { clientsupabase } from "../supabase/supabase";
 
 function RegisterPage() {
   // Estado que va a guardar los datos de registro. Inicialmente va a estar vacio
@@ -16,6 +16,24 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault(); // para evitar que la pag se recargue
     console.log(name, email, username, password);
+
+    try {
+      // Llama a la funcion de 'signUp' de Supabase
+      const result = await clientsupabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            name: name,
+            username: username,
+          },
+        },
+      });
+
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -24,7 +42,7 @@ function RegisterPage() {
       <p>Introduce tus datos para crear una cuenta nueva.</p>
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Nombre</Form.Label>
           <Form.Control
             type="text"
@@ -44,7 +62,7 @@ function RegisterPage() {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-3" controlId="formBasicUsername">
           <Form.Label>Nombre de usuario</Form.Label>
           <Form.Control
             type="text"
