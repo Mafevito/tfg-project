@@ -3,9 +3,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { clientsupabase } from "../supabase/supabase";
 
 function LoginPage() {
+  // Instanciar para poder usarlo
+  const navigate = useNavigate();
+
   // Estado que va a guardar el correo. Inicialmente va a estar vacio
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +27,7 @@ function LoginPage() {
       });
 
       console.log(result);
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }
