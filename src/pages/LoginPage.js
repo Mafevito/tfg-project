@@ -4,30 +4,43 @@ import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { clientsupabase } from "../supabase/supabase";
+import { supabase } from "../supabase/supabase";
+
+import useForm from "../hooks/useForm";
+
+// Declarar initialState
+const initialState = {
+  email: "",
+  password: "",
+};
 
 function LoginPage() {
   // Instanciar para poder usarlo
   const navigate = useNavigate();
 
-  // Estado que va a guardar el correo. Inicialmente va a estar vacio
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // Hacer referencia al Custom Hook y desestructurar lo que retorna
+  const { formValues, handleInputChange } = useForm(initialState);
 
   // Funcion a la que se llama cuando se hace clic en "Enviar"
   const handleSubmit = async (e) => {
     e.preventDefault(); // para evitar que la pag se recargue
-    console.log(email);
+
+    console.log(formValues);
+
+    // Desestructuracion de formValues
+    const { email, password } = formValues;
 
     try {
-      // Llama a la funcion de 'signInWithPassword' de Supabase
-      const result = await clientsupabase.auth.signInWithPassword({
+      // Servicio auth de supabase para hacer login
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
 
-      console.log(result);
-      navigate("/dashboard");
+      if (error) throw error;
+
+      console.log("user se ha logueado correctamente");
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +55,8 @@ function LoginPage() {
             type="email"
             name="email"
             placeholder="Introduce tu email"
-            onChange={(e) => setEmail(e.target.value)}
+            value={formValues.email}
+            onChange={handleInputChange}
           />
         </Form.Group>
 
@@ -52,7 +66,8 @@ function LoginPage() {
             type="password"
             name="password"
             placeholder="Introduce tu contraseña"
-            onChange={(e) => setPassword(e.target.value)}
+            value={formValues.password}
+            onChange={handleInputChange}
           />
         </Form.Group>
 

@@ -2,24 +2,43 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-import { useState } from "react";
-import { clientsupabase } from "../supabase/supabase";
+import { supabase } from "../supabase/supabase";
+
+import useForm from "../hooks/useForm";
+import { registerWithEmail } from "../supabase/authService";
+
+// Declarar initialState
+const initialState = {
+  name: "",
+  email: "",
+  username: "",
+  password: "",
+};
 
 function RegisterPage() {
-  // Estado que va a guardar los datos de registro. Inicialmente va a estar vacio
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  // Hacer referencia al Custom Hook y desestructurar lo que retorna
+  const { formValues, handleInputChange } = useForm(initialState);
 
-  // Funcion a la que se llama cuando se hace clic en "Crear cuenta"
+  // Funcion a la que se llama cuando se hace clic en "Enviar"
   const handleSubmit = async (e) => {
+    // e.preventDefault(); // para evitar que la pag se recargue
+    // console.log(formValues);
+    // // Desestructuracion de formValues
+    // const { name, email, username, password } = formValues;
+    // // Llama al servicio auth de supabase
+    // const result = await registerWithEmail({ email, password });
+    // console.log(result);
+
     e.preventDefault(); // para evitar que la pag se recargue
-    console.log(name, email, username, password);
+
+    console.log(formValues);
+
+    // Desestructuracion de formValues
+    const { name, email, username, password } = formValues;
 
     try {
-      // Llama a la funcion de 'signUp' de Supabase
-      const result = await clientsupabase.auth.signUp({
+      // Servicio auth de supabase para crear user
+      const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
         options: {
@@ -30,7 +49,20 @@ function RegisterPage() {
         },
       });
 
-      console.log(result);
+      if (error) throw error;
+
+      console.log("user se ha creado correctamente");
+      console.log(data);
+
+      // obtener user autentificado
+      if (data) {
+        const user = supabase.auth.getUser();
+
+        const data = {
+          id: user.id,
+          name: user.name,
+        };
+      }
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +80,8 @@ function RegisterPage() {
             type="text"
             name="name"
             placeholder="Introduce tu nombre"
-            onChange={(e) => setName(e.target.value)}
+            value={formValues.name}
+            onChange={handleInputChange}
           />
         </Form.Group>
 
@@ -58,7 +91,8 @@ function RegisterPage() {
             type="email"
             name="email"
             placeholder="Introduce tu email"
-            onChange={(e) => setEmail(e.target.value)}
+            value={formValues.email}
+            onChange={handleInputChange}
           />
         </Form.Group>
 
@@ -68,7 +102,8 @@ function RegisterPage() {
             type="text"
             name="username"
             placeholder="Introduce tu nombre de usuario"
-            onChange={(e) => setUsername(e.target.value)}
+            value={formValues.username}
+            onChange={handleInputChange}
           />
         </Form.Group>
 
@@ -78,7 +113,8 @@ function RegisterPage() {
             type="password"
             name="password"
             placeholder="Introduce una contraseña"
-            onChange={(e) => setPassword(e.target.value)}
+            value={formValues.password}
+            onChange={handleInputChange}
           />
         </Form.Group>
 
