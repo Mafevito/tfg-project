@@ -24,6 +24,7 @@ import {
 import { Outlet, Link as RouteLink } from "react-router-dom";
 import { createContext, useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { supabase } from "../supabase/supabase";
 
 const NavLink = ({ text }) => (
   <Link>
@@ -35,6 +36,12 @@ export default function NavbarComponent() {
   const userLogged = useContext(AuthContext);
   console.log(userLogged);
   console.log(userLogged.user);
+
+  // Funcion auth de supabase para cerrar sesion
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    console.log(error);
+  };
 
   return (
     <Container maxW="1200px">
@@ -48,8 +55,9 @@ export default function NavbarComponent() {
 
         {/* {userLogged.user != null ? <p>si hay user</p> : <p>no hay user</p>} */}
 
+        {/* Segun si hay user logueado se muestra un menu u otro */}
         {userLogged.user != null ? (
-          <HStack direction={"row"} spacing={3}>
+          <HStack direction={"row"} spacing={7}>
             <RouteLink to="#">
               <NavLink text="Explorar listas" />
             </RouteLink>
@@ -83,7 +91,7 @@ export default function NavbarComponent() {
                 <MenuDivider />
                 <MenuItem>Mis listas</MenuItem>
                 <MenuItem>Configurar perfil</MenuItem>
-                <MenuItem>Cerrar sesión</MenuItem>
+                <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
               </MenuList>
             </Menu>
           </HStack>
