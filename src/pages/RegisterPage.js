@@ -1,13 +1,8 @@
-// import Container from "react-bootstrap/Container";
-// import Button from "react-bootstrap/Button";
-// import Form from "react-bootstrap/Form";
 import {
   Heading,
   Stack,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   InputGroup,
   InputRightElement,
@@ -46,18 +41,8 @@ function RegisterPage() {
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertGood, setShowAlertGood] = useState(false);
 
-  let errorMessage;
-
   // Funcion a la que se llama cuando se hace clic en "Enviar"
   const handleSubmit = async (e) => {
-    // e.preventDefault(); // para evitar que la pag se recargue
-    // console.log(formValues);
-    // // Desestructuracion de formValues
-    // const { name, email, username, password } = formValues;
-    // // Llama al servicio auth de supabase
-    // const result = await registerWithEmail({ email, password });
-    // console.log(result);
-
     e.preventDefault(); // para evitar que la pag se recargue
 
     console.log(formValues);
