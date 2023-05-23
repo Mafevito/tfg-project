@@ -15,6 +15,7 @@ import {
   Container,
   Alert,
   AlertIcon,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
@@ -37,12 +38,13 @@ function RegisterPage() {
   // Hacer referencia al Custom Hook y desestructurar lo que retorna
   const { formValues, handleInputChange } = useForm(initialState);
 
-  //const isError = formValues === "";
-
   // Para usar la opcion de mostrar password de chakra
   const [showPassword, setShowPassword] = useState(false);
+  // Para guardar errores devueltos desde servicio de auth de supabase
   const [isError, setError] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
+  // Para mostrar la alerta con el error
+  const [showAlertError, setShowAlertError] = useState(false);
+  const [showAlertGood, setShowAlertGood] = useState(false);
 
   let errorMessage;
 
@@ -77,7 +79,7 @@ function RegisterPage() {
       });
 
       if (error) throw error;
-      //setError(error);
+      setShowAlertGood(true);
 
       console.log("user se ha creado correctamente");
       console.log(data);
@@ -93,11 +95,9 @@ function RegisterPage() {
       }
     } catch (error) {
       console.log(error);
-      errorMessage = error.message;
-      console.log(errorMessage);
-      setShowAlert(true);
       setError(error.message);
       console.log(isError);
+      setShowAlertError(true);
     }
   };
 
@@ -140,7 +140,7 @@ function RegisterPage() {
                 onChange={handleInputChange}
               />
             </FormControl>
-            <FormControl id="password" isInvalid={isError} isRequired>
+            <FormControl id="password" isRequired>
               <FormLabel>Contraseña</FormLabel>
               <InputGroup>
                 <Input
@@ -161,18 +161,21 @@ function RegisterPage() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-
-              {!isError ? (
-                <FormHelperText>no error</FormHelperText>
-              ) : (
-                <FormErrorMessage>{isError}</FormErrorMessage>
-              )}
             </FormControl>
 
-            {showAlert && (
+            {showAlertError && (
               <Alert status="error">
                 <AlertIcon />
-                {`error ${isError}`}
+                <AlertDescription>{isError}</AlertDescription>
+              </Alert>
+            )}
+
+            {showAlertGood && (
+              <Alert status="success">
+                <AlertIcon />
+                <AlertDescription>
+                  Usuario creado correctamente.
+                </AlertDescription>
               </Alert>
             )}
 
