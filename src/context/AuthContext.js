@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 
         if (user != null) {
           setUser(user);
+          console.log(user);
           navigate("/dashboard", { replace: true });
         } else {
           navigate("/", { replace: true });
