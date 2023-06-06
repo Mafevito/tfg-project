@@ -45,7 +45,7 @@ export default function NavbarComponent() {
 
   return (
     <Container maxW="1200px">
-      <Flex as="nav" p="20px" mb="80px" alignItems="center" bg="gray.200">
+      <Flex as="nav" p="20px" mb="80px" alignItems="center" bg="white">
         <Heading as="h1">
           <RouteLink to="/">
             <NavLink text="LOGO" />

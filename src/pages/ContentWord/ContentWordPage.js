@@ -19,8 +19,17 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Avatar,
+  Stack,
+  StackDivider,
 } from "@chakra-ui/react";
-import { FaPlay } from "react-icons/fa";
+import { FaPlay, FaPlus } from "react-icons/fa";
+import { BsBookmarkPlus } from "react-icons/bs";
+import { HiSpeakerWave } from "react-icons/hi2";
 import WordInfo from "./WordInfo";
 
 export default function ContentWordPage({ result }) {
@@ -35,9 +44,7 @@ export default function ContentWordPage({ result }) {
   return (
     <>
       <Container>
-        <h1>content word</h1>
-        <p>aqui va la info</p>
-        <Flex minWidth="max-content" alignItems="center" gap="2" mt="50px">
+        {/* <Flex minWidth="max-content" alignItems="center" gap="2" mt="50px">
           <Box p="2" align="left">
             <Heading as="h3" size="lg">
               {word}
@@ -59,49 +66,62 @@ export default function ContentWordPage({ result }) {
             aria-label="Search database"
             icon={<FaPlay />}
           />
-        </Flex>
 
-        {/* {meanings.map((item, index) => {
-          return <p>{item.partOfSpeech}</p>;
-        })} */}
+          <IconButton
+            colorScheme="blue"
+            aria-label="Search database"
+            icon={<FaPlus />}
+          />
+        </Flex> */}
 
-        {/* El componente WordInfo se encarga de mostrar el "partOfSpeech" y las "definitions" de una palabra */}
-        {/* <Tabs mt="20px"> */}
-        {/* <TabList>
-            {meanings.map((item, index) => {
-              return <Tab>{item.partOfSpeech}</Tab>;
-            })}
-          </TabList> */}
+        <Card mt="50px" maxW="xl">
+          <CardHeader>
+            <Flex spacing="4">
+              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+                <Box align="left">
+                  <Heading as="h3" size="lg">
+                    {word}
+                  </Heading>
 
-        {/* <TabPanels> */}
-        {/* {meanings.map((item, index) => {
-              let definitionss = item.definitions;
-              console.log(item);
-              return (
-                <TabPanel>
-                  {definitionss.map((def, index) => {
-                    let definitiono = def.definition;
-                    console.log(definitiono);
-                    return { definitiono };
-                  })}
-                  ;
-                </TabPanel>
-              );
-            })} */}
+                  <HStack align="left">
+                    {phonetics.map((item, index) => {
+                      return (
+                        <Text fontSize="sm" color="teal" ml="-3px">
+                          {item.text}
+                        </Text>
+                      );
+                    })}
+                  </HStack>
+                </Box>
+              </Flex>
+              <IconButton
+                colorScheme="gray"
+                aria-label="Pronunciación"
+                icon={<HiSpeakerWave />}
+                mr="10px"
+              />
 
-        <Heading as="h4" size="md" textAlign="left" mb="20px" mt="50px">
-          Definiciones
-        </Heading>
+              <IconButton
+                colorScheme="gray"
+                aria-label="Guardar palabra"
+                icon={<BsBookmarkPlus />}
+              />
+            </Flex>
+          </CardHeader>
 
-        <Accordion defaultIndex={[0]} allowMultiple>
-          {meanings &&
-            meanings.map((content) => {
-              return <WordInfo {...content} />;
-            })}
-        </Accordion>
+          {/* <Heading as="h4" size="md" textAlign="left" mb="20px" mt="50px">
+            Definiciones
+          </Heading> */}
 
-        {/* </TabPanels> */}
-        {/* </Tabs> */}
+          <CardBody align="left">
+            <Stack divider={<StackDivider />} spacing="4">
+              {meanings &&
+                meanings.map((content) => {
+                  return <WordInfo {...content} />;
+                })}
+            </Stack>
+          </CardBody>
+        </Card>
       </Container>
     </>
   );

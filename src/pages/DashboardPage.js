@@ -16,6 +16,7 @@ import {
   FormHelperText,
   FormErrorMessage,
   Text,
+  Stack,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -34,7 +35,9 @@ export default function DashboardPage() {
 
   // Funcion que hace la peticion a la API al hacer clic en boton "buscar"
   // pasandole la palabra introducida en el input
-  const searchWord = () => {
+  const searchWord = (e) => {
+    e.preventDefault();
+
     console.log(word);
 
     // console.log(word);
@@ -103,27 +106,28 @@ export default function DashboardPage() {
 
   return (
     <>
-      <Container>
-        <Heading fontSize="2xl" mb="20">
-          DashboardPage
-        </Heading>
-        <form>
+      <Container maxW="600px">
+        <Stack spacing={1} mb="30px">
+          <Heading fontSize="2xl">Búsqueda de palabras</Heading>
+
+          <Text>
+            Busca significados y guárdalos para consultarlos rápidamente
+          </Text>
+        </Stack>
+        <form onSubmit={searchWord}>
           <HStack spacing={4}>
             {/* <FormControl isInvalid={error}> */}
             <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <SearchIcon color="gray.300" />
-              </InputLeftElement>
               <Input
                 variant="filled"
-                placeholder="Introduce un termino"
+                placeholder="¿Qué palabra quieres buscar?"
                 size="md"
                 value={word}
                 onChange={(e) => setWord(e.target.value)}
               />
 
-              <Button colorScheme="blue" onClick={searchWord} ml="10px">
-                Buscar
+              <Button colorScheme="teal" onClick={searchWord} ml="10px">
+                <SearchIcon color="white.300" />
               </Button>
             </InputGroup>
             {/* </FormControl> */}
