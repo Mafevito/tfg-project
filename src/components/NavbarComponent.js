@@ -58,6 +58,9 @@ export default function NavbarComponent() {
         {/* Segun si hay user logueado se muestra un menu u otro */}
         {userLogged.user != null ? (
           <HStack direction={"row"} spacing={7}>
+            <RouteLink to="dashboard">
+              <NavLink text="Inicio" />
+            </RouteLink>
             <RouteLink to="#">
               <NavLink text="Explorar listas" />
             </RouteLink>
@@ -89,8 +92,13 @@ export default function NavbarComponent() {
                 </Center>
                 <br />
                 <MenuDivider />
-                <MenuItem>Mis listas</MenuItem>
-                <MenuItem>Configurar perfil</MenuItem>
+
+                <RouteLink to="/perfil">
+                  <MenuItem>
+                    <NavLink text="Perfil" />
+                  </MenuItem>
+                </RouteLink>
+
                 <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
               </MenuList>
             </Menu>
