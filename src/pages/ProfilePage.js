@@ -16,10 +16,35 @@ import {
   TabPanel,
   TabIndicator,
   IconButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
+import ListFormComponent from "../components/ListFormComponent";
+import { useDisclosure } from "@chakra-ui/react";
 
 export default function ProfilePage() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // Funcion para mostrar el Popover de chackra ui
+  const openPopover = async () => {
+    console.log("click");
+  };
+
   return (
     <>
       <Container maxW="600px">
@@ -70,7 +95,28 @@ export default function ProfilePage() {
                     aria-label="Search database"
                     variant="outline"
                     icon={<FaPlus />}
+                    onClick={onOpen}
                   />
+
+                  {/* <Button onClick={onOpen}>Open Modal</Button> */}
+
+                  <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Crear una nueva lista</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <ListFormComponent />
+                      </ModalBody>
+
+                      <ModalFooter>
+                        {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
+                          Close
+                        </Button>
+                        <Button variant="ghost">Secondary Action</Button> */}
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
                 </HStack>
               </TabPanel>
               <TabPanel>
