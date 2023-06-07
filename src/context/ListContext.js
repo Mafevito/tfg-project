@@ -64,10 +64,31 @@ export const ListContextProvider = ({ children }) => {
     }
   };
 
+  // Funcion para eliminar una lista
+  // teniendo en cuenta si el usuario logueado es el propietario de la lista
+  const deleteList = async (id) => {
+    // console.log(id);
+    const user = userLogged.user.user;
+    const { error, data } = await supabase
+      .from("lists")
+      .delete()
+      .eq("userId", user.id)
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    // Para que en "lists" se muestren todas menos la eliminada.
+    // De esta manera no hace falta recargar la pag despues de la eliminacion
+    setLists(lists.filter((list) => list.id !== id));
+
+    console.log(data);
+  };
+
   // Se exporta tanto "lists" como la funcion "getLists" para que sea usado por el componente "ListGetAll"
   return (
     <ListContext.Provider
-      value={{ lists, getLists, createList, adding, loading }}
+      value={{ lists, getLists, createList, adding, loading, deleteList }}
     >
       {children}
     </ListContext.Provider>
