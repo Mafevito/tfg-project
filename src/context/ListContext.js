@@ -15,6 +15,7 @@ export const useLists = () => {
 export const ListContextProvider = ({ children }) => {
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
   const [lists, setLists] = useState([]);
+  const [adding, setAdding] = useState(false);
 
   // Obtener las listas asociadas al usuario logueado desde Supabase
   const getLists = async () => {
@@ -32,9 +33,36 @@ export const ListContextProvider = ({ children }) => {
     // console.log(user);
   };
 
+  // Funcion para crear una lista
+  const createList = async (listName) => {
+    setAdding(true); // Cuando se empieza a crear
+
+    try {
+      const user = userLogged.user.user;
+      const { error, data } = await supabase
+        .from("lists")
+        .insert({
+          name: listName,
+          userId: user.id,
+        })
+        .select();
+      // console.log(result);
+
+      if (error) throw error;
+      console.log(data);
+
+      setLists([...lists, ...data]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setAdding(false); // al finalizar se establece siempre en false
+      console.log(adding);
+    }
+  };
+
   // Se exporta tanto "lists" como la funcion "getLists" para que sea usado por el componente "ListGetAll"
   return (
-    <ListContext.Provider value={{ lists, getLists }}>
+    <ListContext.Provider value={{ lists, getLists, createList, adding }}>
       {children}
     </ListContext.Provider>
   );
