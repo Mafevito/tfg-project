@@ -36,6 +36,7 @@ import {
 import { FaPlus } from "react-icons/fa";
 import ListFormComponent from "../components/ListFormComponent";
 import { useDisclosure } from "@chakra-ui/react";
+import ListGetAllComponent from "../components/ListGetAllComponent";
 
 export default function ProfilePage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -118,6 +119,9 @@ export default function ProfilePage() {
                     </ModalContent>
                   </Modal>
                 </HStack>
+
+                {/* Mostrar todas las listas del usuario */}
+                <ListGetAllComponent />
               </TabPanel>
               <TabPanel>
                 <p>two!</p>

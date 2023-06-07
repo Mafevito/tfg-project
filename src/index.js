@@ -7,6 +7,7 @@ import App from "./App";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "./context/AuthContext";
+import { ListContextProvider } from "./context/ListContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +16,9 @@ root.render(
       {/* <App /> */}
 
       <AuthProvider>
-        <App />
+        <ListContextProvider>
+          <App />
+        </ListContextProvider>
       </AuthProvider>
     </BrowserRouter>
   </ChakraProvider>
