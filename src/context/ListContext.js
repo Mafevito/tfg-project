@@ -16,9 +16,12 @@ export const ListContextProvider = ({ children }) => {
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
   const [lists, setLists] = useState([]);
   const [adding, setAdding] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Obtener las listas asociadas al usuario logueado desde Supabase
   const getLists = async () => {
+    setLoading(true); // Al cargar
+
     const user = userLogged.user.user;
     const { error, data } = await supabase
       .from("lists")
@@ -31,6 +34,7 @@ export const ListContextProvider = ({ children }) => {
     setLists(data);
     // console.log(result);
     // console.log(user);
+    setLoading(false); // Al finalizar consultas
   };
 
   // Funcion para crear una lista
@@ -62,7 +66,9 @@ export const ListContextProvider = ({ children }) => {
 
   // Se exporta tanto "lists" como la funcion "getLists" para que sea usado por el componente "ListGetAll"
   return (
-    <ListContext.Provider value={{ lists, getLists, createList, adding }}>
+    <ListContext.Provider
+      value={{ lists, getLists, createList, adding, loading }}
+    >
       {children}
     </ListContext.Provider>
   );
