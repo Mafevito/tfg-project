@@ -85,10 +85,33 @@ export const ListContextProvider = ({ children }) => {
     console.log(data);
   };
 
+  const updateList = async (id, updateFields) => {
+    // console.log(id, updateFields);
+    const user = userLogged.user.user;
+    const { error, data } = await supabase
+      .from("lists")
+      .update(updateFields)
+      .eq("userId", user.id)
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    console.log(data);
+  };
+
   // Se exporta tanto "lists" como la funcion "getLists" para que sea usado por el componente "ListGetAll"
   return (
     <ListContext.Provider
-      value={{ lists, getLists, createList, adding, loading, deleteList }}
+      value={{
+        lists,
+        getLists,
+        createList,
+        adding,
+        loading,
+        deleteList,
+        updateList,
+      }}
     >
       {children}
     </ListContext.Provider>
