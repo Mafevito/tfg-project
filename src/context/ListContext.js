@@ -17,6 +17,7 @@ export const ListContextProvider = ({ children }) => {
   const [lists, setLists] = useState([]);
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [list, setList] = useState([]);
 
   // Obtener las listas asociadas al usuario logueado desde Supabase
   const getLists = async () => {
@@ -35,6 +36,23 @@ export const ListContextProvider = ({ children }) => {
     // console.log(result);
     // console.log(user);
     setLoading(false); // Al finalizar consultas
+  };
+
+  // Obtener una lista concreta
+  const getList = async (id) => {
+    const user = userLogged.user.user;
+    const { error, data } = await supabase
+      .from("lists")
+      .select()
+      .eq("userId", user.id)
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    console.log(data);
+    setList(data);
+    console.log(list);
   };
 
   // Funcion para crear una lista
@@ -111,6 +129,8 @@ export const ListContextProvider = ({ children }) => {
         loading,
         deleteList,
         updateList,
+        getList,
+        list,
       }}
     >
       {children}

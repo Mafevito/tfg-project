@@ -17,6 +17,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useLists } from "../context/ListContext";
 import { useState, useContext, useEffect } from "react";
 import ListFormEditComponent from "./ListFormEditComponent";
+import { Link } from "react-router-dom";
 
 export default function ListCardComponent({ list }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,7 +74,8 @@ export default function ListCardComponent({ list }) {
 
   return (
     <>
-      <h1>{list.name}</h1>
+      {/* <h1>{list.name}</h1> */}
+      <Link to={`/lista/${list.id}`}>{list.name}</Link>
       <p>{JSON.stringify(list.publica)}</p>
 
       <button onClick={() => handleDelete()}>Eliminar</button>
