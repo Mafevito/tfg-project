@@ -37,6 +37,7 @@ import { FaPlus } from "react-icons/fa";
 import ListFormComponent from "../components/ListFormComponent";
 import { useDisclosure } from "@chakra-ui/react";
 import ListGetAllComponent from "../components/ListGetAllComponent";
+import ListGetAllFavoritesComponent from "../components/ListGetAllFavoritesComponent";
 
 export default function ProfilePage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -79,6 +80,7 @@ export default function ProfilePage() {
           <Tabs>
             <TabList>
               <Tab _selected={{ color: "teal" }}>Listas</Tab>
+              <Tab _selected={{ color: "teal" }}>Listas favoritas</Tab>
             </TabList>
 
             <TabIndicator
@@ -124,7 +126,8 @@ export default function ProfilePage() {
                 <ListGetAllComponent />
               </TabPanel>
               <TabPanel>
-                <p>two!</p>
+                {/* Mostras todas las listas marcadas como favorito del usuario */}
+                <ListGetAllFavoritesComponent />
               </TabPanel>
             </TabPanels>
           </Tabs>
