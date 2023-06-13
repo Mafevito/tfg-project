@@ -61,7 +61,7 @@ export default function NavbarComponent() {
             <RouteLink to="dashboard">
               <NavLink text="Inicio" />
             </RouteLink>
-            <RouteLink to="#">
+            <RouteLink to="/explorar-listas">
               <NavLink text="Explorar listas" />
             </RouteLink>
 

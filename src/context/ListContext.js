@@ -18,6 +18,7 @@ export const ListContextProvider = ({ children }) => {
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
+  const [allLists, setAllLists] = useState([]);
 
   // Obtener las listas asociadas al usuario logueado desde Supabase
   const getLists = async () => {
@@ -53,6 +54,27 @@ export const ListContextProvider = ({ children }) => {
     console.log(data);
     setList(data);
     console.log(list);
+  };
+
+  // Obtener todas las listas para mostrar en pag "/explorar-listas",
+  // excepto las del usuario logueado y las que sean privadas
+  const getAllLists = async () => {
+    setLoading(true); // Al cargar
+
+    const user = userLogged.user.user;
+    const { error, data } = await supabase
+      .from("lists")
+      .select(`*, user:users(name)`)
+      .neq("userId", user.id)
+      .eq("publica", true)
+      .order("id", { ascending: true });
+
+    if (error) throw error;
+
+    console.log(data);
+    setAllLists(data);
+
+    setLoading(false); // Al finalizar consultas
   };
 
   // Funcion para crear una lista
@@ -131,6 +153,8 @@ export const ListContextProvider = ({ children }) => {
         updateList,
         getList,
         list,
+        getAllLists,
+        allLists,
       }}
     >
       {children}

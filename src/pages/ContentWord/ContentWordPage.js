@@ -229,13 +229,12 @@ export default function ContentWordPage({ result }) {
               {/* Mostrar popover para "Añadir palabra a una lista existente" */}
               <Popover placement="right">
                 <PopoverTrigger>
-                  <Button>Trigger</Button>
-                  {/* <IconButton
+                  {/* <Button>Trigger</Button> */}
+                  <IconButton
                     colorScheme="gray"
                     aria-label="Guardar palabra"
                     icon={<BsBookmarkPlus />}
-                    onClick={handleSaveWord}
-                  /> */}
+                  />
                 </PopoverTrigger>
                 <PopoverContent>
                   <PopoverArrow />
