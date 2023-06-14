@@ -44,10 +44,10 @@ export const ListContextProvider = ({ children }) => {
     const user = userLogged.user.user;
     const { error, data } = await supabase
       .from("lists")
-      .select()
-      .eq("userId", user.id)
-      .eq("id", id)
-      .select();
+      .select(`*, user:users(name)`)
+      //.eq("userId", user.id)
+      .eq("id", id);
+    //.select();
 
     if (error) throw error;
 

@@ -83,7 +83,7 @@ export const BookmarkContextProvider = ({ children }) => {
       const { error, data } = await supabase
         .from("words")
         .select()
-        .eq("userId", user.id)
+        //.eq("userId", user.id)
         .eq("listId", listId)
         .select();
 
