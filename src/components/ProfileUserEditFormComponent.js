@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  Container,
   Heading,
   Box,
   Flex,
@@ -39,23 +38,21 @@ import {
   Alert,
   AlertIcon,
   AlertDescription,
+  useToast,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
+import { BsPencilSquare } from "react-icons/bs";
 import { AuthContext } from "../context/AuthContext";
 import { supabase } from "../supabase/supabase";
 
 export default function ProfileUserEditFormComponent() {
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // Para guardar errores devueltos desde servicio de auth de supabase
-  const [isError, setError] = useState("");
-  // Para mostrar la alerta con el error
-  const [showAlertError, setShowAlertError] = useState(false);
-  const [showAlertGood, setShowAlertGood] = useState(false);
-
+  // Para actualizar los datos del usuario logueado
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure(); // Para manejar el modal de chackra-ui
+  const toast = useToast(); // Para usar el toast de chackra-ui
 
   console.log(userLogged);
   console.log(userLogged.user.user.user_metadata);
@@ -66,7 +63,7 @@ export default function ProfileUserEditFormComponent() {
     console.log("edit user");
 
     try {
-      // Servicio auth de supabase para crear user
+      // Servicio auth de supabase para editar user
       const { data, error } = await supabase.auth.updateUser({
         data: {
           name: name,
@@ -75,15 +72,20 @@ export default function ProfileUserEditFormComponent() {
       });
 
       if (error) throw error;
-      setShowAlertGood(true);
 
-      console.log("user se ha creado correctamente");
+      console.log("user se ha actualizado correctamente");
       console.log(data);
+
+      // Si el user se ha editado correctamente se muestra un toast
+      toast({
+        title: "Datos actualizados.",
+        description: "Tus datos de usuario se han actualizado correctamente.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
     } catch (error) {
       console.log(error);
-      setError(error.message);
-      console.log(isError);
-      setShowAlertError(true);
     }
   };
 
@@ -94,114 +96,97 @@ export default function ProfileUserEditFormComponent() {
   }, []);
 
   return (
-    <>
-      <Heading as="h6" fontSize="xs" align="left" mb="10">
-        Perfil
-      </Heading>
-      <Flex minWidth="max-content" alignItems="center" gap="2" mb="30px">
-        <Box p="2" align="left">
-          <Heading as="h4" size="md">
-            {/* Nombre de usuario */}
-            {userLogged.user.user.user_metadata.name}
-          </Heading>
+    <Box>
+      <Stack bg={"gray.50"} rounded={"xl"} p={{ base: 4, sm: 6, md: 8 }}>
+        <Flex minWidth="max-content" alignItems="center" gap="2" mb="30px">
+          <Box p="2" align="left">
+            <Heading as="h4" size="md" mb="5px">
+              {userLogged.user.user.user_metadata.name}
+            </Heading>
 
-          <HStack>
-            <Text color="gray">
-              {/* @username */}@{userLogged.user.user.user_metadata.username}
-            </Text>
-          </HStack>
-        </Box>
-        <Spacer />
-        <Button colorScheme="teal" size="md" onClick={onOpen}>
-          Editar perfil
-        </Button>
+            <HStack>
+              <Text color="gray" fontSize="md">
+                @{userLogged.user.user.user_metadata.username}
+              </Text>
+            </HStack>
+          </Box>
+          <Spacer />
+          <Button
+            colorScheme="teal"
+            size="md"
+            onClick={onOpen}
+            leftIcon={<BsPencilSquare />}
+          >
+            Editar perfil
+          </Button>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Editar datos de usuario.</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              {/* <form onSubmit={handleSubmit}> */}
-              <Stack spacing={4}>
-                <FormControl id="name" isRequired>
-                  <FormLabel>Nombre</FormLabel>
-                  <Input
-                    type="text"
-                    name="name"
-                    placeholder="Introduce tu nombre"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl id="username">
-                  <FormLabel optionalIndicator>Nombre de usuario</FormLabel>
-                  <Input
-                    type="text"
-                    name="username"
-                    placeholder="Introduce tu nombre de usuario"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </FormControl>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Editar datos de usuario.</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <form>
+                  <Stack spacing={4}>
+                    <FormControl id="name">
+                      <FormLabel>Nombre</FormLabel>
+                      <Input
+                        type="text"
+                        name="name"
+                        placeholder="Edita tu nombre"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormControl id="username">
+                      <FormLabel optionalIndicator>Nombre de usuario</FormLabel>
+                      <Input
+                        type="text"
+                        name="username"
+                        placeholder="Edita tu nombre de usuario"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </FormControl>
+                  </Stack>
+                </form>
+              </ModalBody>
 
-                {showAlertError && (
-                  <Alert status="error">
-                    <AlertIcon />
-                    <AlertDescription>{isError}</AlertDescription>
-                  </Alert>
-                )}
-
-                {showAlertGood && (
-                  <Alert status="success">
-                    <AlertIcon />
-                    <AlertDescription>
-                      Usuario creado correctamente.
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </Stack>
-              {/* </form> */}
-            </ModalBody>
-
-            <ModalFooter>
-              {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="ghost">Secondary Action</Button> */}
-              <Stack
-                spacing={6}
-                direction={["column", "row"]}
-                w={"full"}
-                maxW={"md"}
-              >
-                <Button
-                  bg={"red.400"}
-                  color={"white"}
-                  w="full"
-                  _hover={{
-                    bg: "red.500",
-                  }}
-                  onClick={onClose}
+              <ModalFooter mb="10px">
+                <Stack
+                  spacing={6}
+                  direction={["column", "row"]}
+                  w={"full"}
+                  maxW={"md"}
                 >
-                  Cancelar
-                </Button>
-                <Button
-                  bg={"blue.400"}
-                  color={"white"}
-                  w="full"
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                  onClick={handleUpdate}
-                >
-                  Actualizar
-                </Button>
-              </Stack>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </Flex>
-    </>
+                  <Button
+                    bg={"red.400"}
+                    color={"white"}
+                    w="full"
+                    _hover={{
+                      bg: "red.500",
+                    }}
+                    onClick={onClose}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    bg={"teal.400"}
+                    color={"white"}
+                    w="full"
+                    _hover={{
+                      bg: "teal.500",
+                    }}
+                    onClick={handleUpdate}
+                  >
+                    Guardar
+                  </Button>
+                </Stack>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Flex>
+      </Stack>
+    </Box>
   );
 }

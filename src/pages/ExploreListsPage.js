@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLists } from "../context/ListContext";
 import { useFavorites } from "../context/FavoriteContext";
+import { Container, Text } from "@chakra-ui/react";
 
-import ListCardFavoriteComponent from "../components/ListCardFavoriteComponent";
-import ListCardNoFavoriteComponent from "../components/ListCardNoFavoriteComponent";
+import ExploreListCardFavoriteComponent from "../components/ExploreListCardFavoriteComponent";
+import ExploreListCardNoFavoriteComponent from "../components/ExploreListCardNoFavoriteComponent";
 
 export default function ExploreListPage() {
   const { allLists, getAllLists, loading, updateList } = useLists();
@@ -81,11 +82,11 @@ export default function ExploreListPage() {
         return (
           <ul>
             {result1.map((list) => (
-              <ListCardFavoriteComponent list={list} />
+              <ExploreListCardFavoriteComponent list={list} />
             ))}
 
             {result2.map((list) => (
-              <ListCardNoFavoriteComponent list={list} />
+              <ExploreListCardNoFavoriteComponent list={list} />
             ))}
           </ul>
         );
@@ -93,7 +94,7 @@ export default function ExploreListPage() {
         return (
           <ul>
             {result1.map((list) => (
-              <ListCardFavoriteComponent list={list} />
+              <ExploreListCardFavoriteComponent list={list} />
             ))}
           </ul>
         );
@@ -101,7 +102,7 @@ export default function ExploreListPage() {
         return (
           <ul>
             {result2.map((list) => (
-              <ListCardNoFavoriteComponent list={list} />
+              <ExploreListCardNoFavoriteComponent list={list} />
             ))}
           </ul>
         );
@@ -111,5 +112,12 @@ export default function ExploreListPage() {
     }
   }
 
-  return <div>{renderLists()}</div>;
+  return (
+    <Container maxW="675px">
+      <Text fontSize="md" textAlign="left">
+        Explora listas de palabras creadas por otros usuarios y guardalas.
+      </Text>
+      {renderLists()}
+    </Container>
+  );
 }

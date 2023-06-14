@@ -4,7 +4,7 @@ import { useBookmarks } from "../context/BookmarkContext";
 
 import ListCardComponent from "./ListCardComponent";
 
-export default function ListGetAllComponent() {
+export default function ProfileUserListsGetAllComponent() {
   // Obteneniendo arreglo de listas asociadas al usuario logueado desde ListContext
   const { lists, getLists, loading } = useLists();
   const { bookmarks, getBookmarks } = useBookmarks();
@@ -21,7 +21,7 @@ export default function ListGetAllComponent() {
     if (loading) {
       return <p>Cargando..</p>;
     } else if (lists.length === 0) {
-      return <p>Listas no encontradas.</p>;
+      return <p>Listas aún no creadas.</p>;
     } else {
       return (
         <>

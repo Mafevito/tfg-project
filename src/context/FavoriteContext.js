@@ -27,7 +27,7 @@ export const FavoriteContextProvider = ({ children }) => {
     const user = userLogged.user.user;
     const { error, data } = await supabase
       .from("favorites")
-      .select(`*, list:lists(name)`)
+      .select(`*, list:lists(name, id), user:users(name)`)
       .eq("userId", user.id);
 
     if (error) throw error;

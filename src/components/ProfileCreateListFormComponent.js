@@ -12,13 +12,14 @@ import {
   Heading,
   Spacer,
   ButtonGroup,
+  useToast,
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 // import { supabase } from "../supabase/supabase";
 import { AuthContext } from "../context/AuthContext";
 import { useLists } from "../context/ListContext";
 
-export default function ListFormComponent() {
+export default function ProfileCreateListFormComponent() {
   const userLogged = useContext(AuthContext);
   console.log(userLogged);
   console.log(userLogged.user);
@@ -28,6 +29,8 @@ export default function ListFormComponent() {
   const [listName, setListName] = useState("");
   const { createList, adding } = useLists();
 
+  const toast = useToast(); // Para usar el toast de chackra-ui
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,19 +38,16 @@ export default function ListFormComponent() {
 
     createList(listName);
 
-    setListName("");
+    // Si la lista se ha creado correctamente se muestra un toast
+    toast({
+      title: "Lista creada.",
+      description: "La lista ha sido creada correctamente.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
 
-    // Insertar el "Nombre de la lista" en la tabla "lists"
-    // try {
-    //   const user = userLogged.user.user;
-    //   const result = await supabase.from("lists").insert({
-    //     name: listName,
-    //     userId: user.id,
-    //   });
-    //   console.log(result);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    setListName("");
   };
 
   return (
@@ -64,16 +64,14 @@ export default function ListFormComponent() {
               value={listName}
               onChange={(e) => setListName(e.target.value)}
             />
-            {/* <Checkbox defaultChecked mt="10px" mb="15px">
-              Privada
-            </Checkbox> */}
           </FormControl>
 
           <Flex minWidth="max-content" alignItems="center" gap="2">
             <Spacer />
             <Button
+              mt="20px"
+              mb="10px"
               colorScheme="teal"
-              size="md"
               type="submit"
               disabled={adding}
             >
