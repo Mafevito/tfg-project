@@ -38,6 +38,7 @@ import ListFormComponent from "../components/ListFormComponent";
 import { useDisclosure } from "@chakra-ui/react";
 import ListGetAllComponent from "../components/ListGetAllComponent";
 import ListGetAllFavoritesComponent from "../components/ListGetAllFavoritesComponent";
+import ProfileUserEditFormComponent from "../components/ProfileUserEditFormComponent";
 
 export default function ProfilePage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,25 +51,7 @@ export default function ProfilePage() {
   return (
     <>
       <Container maxW="600px">
-        <Heading as="h6" fontSize="xs" align="left" mb="10">
-          Perfil
-        </Heading>
-
-        <Flex minWidth="max-content" alignItems="center" gap="2" mb="30px">
-          <Box p="2" align="left">
-            <Heading as="h4" size="md">
-              Nombre de usuario
-            </Heading>
-
-            <HStack>
-              <Text color="gray">@username</Text>
-            </HStack>
-          </Box>
-          <Spacer />
-          <Button colorScheme="teal" size="md">
-            Editar perfil
-          </Button>
-        </Flex>
+        <ProfileUserEditFormComponent />
 
         <Divider />
 
