@@ -15,10 +15,7 @@ export const useFavorites = () => {
 export const FavoriteContextProvider = ({ children }) => {
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
   const [favorites, setFavorites] = useState([]);
-  // const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const [list, setList] = useState([]);
-  // const [allLists, setAllLists] = useState([]);
 
   // Obtener las listas asociadas como favorito al usuario logueado desde Supabase
   const getFavorites = async () => {
@@ -31,7 +28,7 @@ export const FavoriteContextProvider = ({ children }) => {
       .eq("userId", user.id);
 
     if (error) throw error;
-    console.log(data);
+    //console.log(data);
 
     setFavorites(data);
     // console.log(result);
@@ -52,7 +49,7 @@ export const FavoriteContextProvider = ({ children }) => {
         .select();
 
       if (error) throw error;
-      console.log(data);
+      //console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -74,8 +71,7 @@ export const FavoriteContextProvider = ({ children }) => {
     // Para que en "lists" se muestren todas menos la eliminada.
     // De esta manera no hace falta recargar la pag despues de la eliminacion
     setFavorites(favorites.filter((fav) => fav.id !== id));
-
-    console.log(data);
+    //console.log(data);
   };
 
   // Se exporta tanto "lists" como la funcion "getLists" para que sea usado por el componente "ListGetAll"

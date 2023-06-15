@@ -1,12 +1,7 @@
 import React from "react";
 import {
-  Heading,
   Box,
-  Flex,
-  Stack,
   HStack,
-  Text,
-  Spacer,
   Button,
   Tabs,
   TabList,
@@ -14,25 +9,16 @@ import {
   Tab,
   TabPanel,
   TabIndicator,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
-import { useDisclosure } from "@chakra-ui/react";
+
 import ProfileCreateListFormComponent from "./ProfileCreateListFormComponent";
 import ProfileUserListsGetAllComponent from "./ProfileUserListsGetAllComponent";
 import ProfileUserListsGetAllFavoritesComponent from "./ProfileUserListsGetAllFavoritesComponent";
@@ -42,15 +28,6 @@ export default function ProfileUserListsComponent() {
 
   return (
     <Box mt="60px">
-      <Heading as="h5" size="sm" align="left" mb="5px">
-        Tu vaul
-      </Heading>
-
-      <Text fontSize="sm" textAlign="left" color="gray" mb="25px">
-        Aqui se muestran todas tus listas, las creadas por ti y las marcadas
-        como favoritas.
-      </Text>
-
       <Tabs>
         <TabList>
           <Tab _selected={{ color: "teal" }}>Mis Listas</Tab>

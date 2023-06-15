@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { useLists } from "../context/ListContext";
-import { useFavorites } from "../context/FavoriteContext";
+import { useEffect } from "react";
 import { Container, Text } from "@chakra-ui/react";
 
+import { useLists } from "../context/ListContext";
+import { useFavorites } from "../context/FavoriteContext";
 import ExploreListCardFavoriteComponent from "../components/ExploreListCardFavoriteComponent";
 import ExploreListCardNoFavoriteComponent from "../components/ExploreListCardNoFavoriteComponent";
 
 export default function ExploreListPage() {
-  const { allLists, getAllLists, loading, updateList } = useLists();
+  const { allLists, getAllLists, loading } = useLists();
   const { getFavorites, favorites } = useFavorites();
 
   // Obtener los que son iguales (favoritos)
@@ -24,12 +24,10 @@ export default function ExploreListPage() {
     });
   });
 
-  console.log(result1);
-  console.log(result2);
-
-  const results = [...result1, ...result2];
-
-  console.log(results);
+  // console.log(result1);
+  // console.log(result2);
+  // const results = [...result1, ...result2];
+  // console.log(results);
 
   // Se ejecuta al cargar el componente
   useEffect(() => {
@@ -44,40 +42,6 @@ export default function ExploreListPage() {
     } else if (allLists.length === 0) {
       return <p>Listas no encontradas.</p>;
     } else {
-      // return (
-      //   <>
-      //     {allLists.map((list) => (
-      //       <ExploreListCardComponent list={list} favs={favorites} />
-      //     ))}
-      //   </>
-      // );
-      // return (
-      //   <ul>
-      //     {allLists.map((list) => {
-      //       return favorites.map((fav) => (
-      //         <li key={list.id}>
-      //           {fav.listId} - {list.id}
-      //           {list.id === fav.listId ? (
-      //             "igual"
-      //           ) : (
-      //             <>
-      //               <ExploreListCardComponent list={list} />
-      //             </>
-      //           )}
-      //         </li>
-      //       ));
-      //     })}
-      //   </ul>
-      // );
-      // return (
-      //   <ul>
-      //     {allLists.map((list) => (
-      //       <ExploreListCardComponent list={list} favs={favorites} />
-      //     ))}
-      //     nada
-      //   </ul>
-      // );
-
       if (result1.length > 0 && result2.length > 0) {
         return (
           <ul>

@@ -22,8 +22,6 @@ export default function UserDataFormEditComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault(); // para evitar que la pag se recargue
 
-    console.log("edit user");
-
     try {
       // Servicio auth de supabase para editar user
       const { data, error } = await supabase.auth.updateUser({
@@ -36,7 +34,7 @@ export default function UserDataFormEditComponent() {
       if (error) throw error;
 
       console.log("user se ha actualizado correctamente");
-      console.log(data);
+      //console.log(data);
 
       // Si el user se ha editado correctamente se muestra un toast
       toast({

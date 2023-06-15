@@ -1,4 +1,5 @@
-// El objetivo de este contexto es estar atento a los cambios en la sesión del user
+// El objetivo de este contexto es estar atento a los cambios en la sesión del user.
+// Y permitir a un usuario registrarse, loguearse y cerrar sesión.
 import { createContext, useEffect, useState, useContext } from "react";
 import { supabase } from "../supabase/supabase";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
       setShowAlertGood(true);
       console.log("user se ha creado correctamente");
-      console.log(data);
+      //console.log(data);
 
       navigate("/login", { replace: true });
     } catch (error) {
@@ -69,7 +70,7 @@ export const AuthProvider = ({ children }) => {
       if (error) throw error;
 
       console.log("user se ha logueado correctamente");
-      console.log(data);
+      // console.log(data);
 
       navigate("/dashboard", { replace: true });
     } catch (error) {
@@ -87,60 +88,14 @@ export const AuthProvider = ({ children }) => {
     setUser("");
   };
 
+  // Escucha los cambios en la sesión del usuario
   useEffect(() => {
-    // DE ESTA MANERA NO ME FUNCIONA, ME DA ERROR: "invalid claim: missing sub claim"
-    // const { data: authListener } = supabase.auth.onAuthStateChange(async () =>
-    //   checkUser()
-    // );
-
-    // const checkUser = async () => {
-    //   const user = supabase.auth.getUser();
-
-    //   // si user esta logueado
-    //   if (user) {
-    //     setUser(user);
-    //     navigate("/dashboard", { replace: true });
-    //   } else {
-    //     navigate("/", { replace: true });
-    //   }
-    // };
-
-    // return () => {
-    //   authListener.subscription.unsubscribe();
-    // };
-
-    // let user;
-    // const { data: authListener } = supabase.auth.onAuthStateChange(
-    //   (event, session) => {
-    //     console.log(event, session);
-
-    //     user = session;
-
-    //     console.log(user);
-
-    //     if (user != null) {
-    //       setUser(user);
-    //       console.log(user);
-    //       navigate("/dashboard", { replace: true });
-    //     } else {
-    //       navigate("/", { replace: true });
-    //     }
-    //   }
-
-    //let user;
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         console.log(event, session);
 
-        //user = session;
-
-        // console.log(user);
-        // console.log(session);
-
         if (session) {
           setUser(session);
-          //console.log(user);
-          //navigate("/dashboard", { replace: true });
         } else {
           navigate("/", { replace: true });
         }

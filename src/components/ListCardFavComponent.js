@@ -1,50 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Checkbox,
-  Text,
-  Box,
-  Heading,
-  HStack,
-  Flex,
-  IconButton,
-  Tag,
-} from "@chakra-ui/react";
-import {
-  BsArrowUpRight,
-  BsHeartFill,
-  BsHeart,
-  BsBoxArrowUpRight,
-} from "react-icons/bs";
+import { Text, Box, Heading, HStack, Flex, IconButton } from "@chakra-ui/react";
+import { BsHeartFill, BsHeart, BsBoxArrowUpRight } from "react-icons/bs";
+
 import { useFavorites } from "../context/FavoriteContext";
 
 export default function ListCardFavComponent({ fav }) {
   const [isfavorite, setIsFavorite] = useState(false);
   const { createFavorite, deleteFavorite } = useFavorites();
 
-  console.log(fav);
-
   const handleFavoriteList = async () => {
     // Si "isFavorite" es true y se hace clic, se quita la lista como favorito.
     // El icono de corazon se muestra sin rellenar.
     if (isfavorite) {
-      console.log(fav.list.id);
-      console.log("quitar fav");
+      //console.log(fav.list.id);
+      //console.log("quitar fav");
       deleteFavorite(fav.list.id);
       setIsFavorite(false);
     } else {
-      console.log("add fav");
+      //console.log("add fav");
       createFavorite(fav.list.id);
       setIsFavorite(true);
     }
@@ -83,15 +57,8 @@ export default function ListCardFavComponent({ fav }) {
                 alignItems="center"
                 justifyContent={"space-between"}
                 roundedBottom={"sm"}
-                //cursor={"pointer"}
                 w="full"
               >
-                {/* <Text fontSize={"md"} fontWeight={"normal"} color="black">
-                  <Link to={`/lista/${fav.list.id}`}>Ver más</Link>
-                </Text>
-
-                <BsArrowUpRight color="black" /> */}
-
                 <Link to={`/lista/${fav.list.id}`}>
                   Ver más
                   <IconButton

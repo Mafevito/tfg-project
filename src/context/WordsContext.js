@@ -1,69 +1,31 @@
 import { createContext, useContext, useState } from "react";
 import { supabase } from "../supabase/supabase";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "./AuthContext";
 
 // Este context puede ser usado por otras partes de la app
-export const BookmarkContext = createContext();
+export const WordContext = createContext();
 
 // Hook para poder usar este context
-export const useBookmarks = () => {
-  const context = useContext(BookmarkContext);
+export const useWords = () => {
+  const context = useContext(WordContext);
   return context;
 };
 
-export const BookmarkContextProvider = ({ children }) => {
+export const WordContextProvider = ({ children }) => {
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
-  const [bookmarks, setBookmarks] = useState([]);
   const [words, setWords] = useState([]);
   const [wordExist, setWordExist] = useState(false);
   const [oneWord, setOneWord] = useState([]);
 
-  // Funcion para obtener los bookmarks asociados al usuario logueado
-  // const getBookmarks = async () => {
-  //   const user = userLogged.user.user;
-  //   const { error, data } = await supabase
-  //     .from("bookmarks")
-  //     .select()
-  //     .eq("userId", user.id)
-  //     .order("id", { ascending: true });
-
-  //   if (error) throw error;
-
-  //   setBookmarks(data);
-  //   console.log(data);
-  // };
-
-  // Funcion para crear un bookmark 1
-  // const createBookmark = async (listId, savedWord) => {
-  //   console.log(savedWord);
-  //   try {
-  //     const user = userLogged.user.user;
-  //     const { error, data } = await supabase
-  //       .from("bookmarks")
-  //       .insert(
-  //         { listId: listId, word: savedWord.word, userId: user.id },
-  //         { ignoreDuplicates: false }
-  //       )
-  //       .select();
-
-  //     if (error) throw error;
-
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   // Guardar palabra + info cuando es agregada a una lista
-  const createBookmark = async (listId, savedWord) => {
-    console.log(savedWord);
+  const createWord = async (listId, savedWord) => {
     try {
       const user = userLogged.user.user;
       const { error, data } = await supabase
         .from("words")
         .insert({
           word: savedWord.word,
-          content_json: savedWord,
+          // content_json: savedWord,
           listId: listId,
           userId: user.id,
         })
@@ -71,7 +33,7 @@ export const BookmarkContextProvider = ({ children }) => {
 
       if (error) throw error;
 
-      console.log(data);
+      //console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -90,13 +52,14 @@ export const BookmarkContextProvider = ({ children }) => {
 
       if (error) throw error;
 
-      console.log(data);
+      //console.log(data);
       setWords(data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Obtener la columna "word" y "listId" que coincide con "word" y "listId" pasados desde ContentWordPage
   const checkExist = async (listId, word) => {
     try {
       const { data, error } = await supabase
@@ -108,14 +71,13 @@ export const BookmarkContextProvider = ({ children }) => {
 
       if (error) throw error;
 
-      console.log(data);
-      console.log(data.length);
+      //console.log(data);
 
       if (data.length > 0) {
-        console.log("SI existe");
+        //console.log("SI existe");
         setWordExist(true);
       } else {
-        console.log("NO existe");
+        //console.log("NO existe");
         setWordExist(false);
       }
     } catch (error) {
@@ -123,7 +85,8 @@ export const BookmarkContextProvider = ({ children }) => {
     }
   };
 
-  const getBookmarks = async () => {
+  // Obtener todas las palabras
+  const getWords = async () => {
     const user = userLogged.user.user;
     const { error, data } = await supabase
       .from("words")
@@ -133,8 +96,8 @@ export const BookmarkContextProvider = ({ children }) => {
 
     if (error) throw error;
 
-    setBookmarks(data);
-    console.log(data);
+    setWords(data);
+    //console.log(data);
   };
 
   // Funcion para eliminar una palabra de una lista
@@ -153,10 +116,10 @@ export const BookmarkContextProvider = ({ children }) => {
     // Para que en "lists" se muestren todas menos la eliminada.
     // De esta manera no hace falta recargar la pag despues de la eliminacion
     setWords(words.filter((word) => word.id !== id));
-
-    console.log(data);
+    //console.log(data);
   };
 
+  // Funcion para obtener una palabra en concreto
   const getWord = async (listId, word) => {
     const user = userLogged.user.user;
     const { error, data } = await supabase
@@ -169,17 +132,16 @@ export const BookmarkContextProvider = ({ children }) => {
 
     if (error) throw error;
 
-    console.log(data);
+    //console.log(data);
     setOneWord(data);
-    console.log(oneWord);
   };
 
   return (
-    <BookmarkContext.Provider
+    <WordContext.Provider
       value={{
-        bookmarks,
-        createBookmark,
-        getBookmarks,
+        words,
+        createWord,
+        getWords,
         getRelationWordList,
         words,
         checkExist,
@@ -190,6 +152,6 @@ export const BookmarkContextProvider = ({ children }) => {
       }}
     >
       {children}
-    </BookmarkContext.Provider>
+    </WordContext.Provider>
   );
 };

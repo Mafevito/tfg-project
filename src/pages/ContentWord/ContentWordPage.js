@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Box,
@@ -22,54 +22,42 @@ import {
   PopoverCloseButton,
   useToast,
 } from "@chakra-ui/react";
-import { FaPlay, FaPlus } from "react-icons/fa";
 import { BsBookmarkPlus } from "react-icons/bs";
 import { HiSpeakerWave } from "react-icons/hi2";
 
-import { AuthContext } from "../../context/AuthContext";
 import { useLists } from "../../context/ListContext";
-import { useBookmarks } from "../../context/BookmarkContext";
+import { useWords } from "../../context/WordsContext";
 import WordInfo from "./WordInfo";
 
 export default function ContentWordPage({ result }) {
+  // Desestructurando "result" que se pasa desde DashboardPage
+  const { word, phonetics, meanings } = result;
   // Estado para poder guardar "result" que es igual a toda la info de la palabra
   const [savedWord, setSavedWord] = useState({});
-
-  const userLogged = useContext(AuthContext); // Obtener el usuario logueado
-  console.log(userLogged);
-
   // Obteneniendo arreglo de listas asociadas al usuario logueado desde ListContext
-  const { lists, getLists, loading, updateList } = useLists();
-  console.log(lists);
-
-  const { createBookmark, getRelationWordList, words, checkExist, wordExist } =
-    useBookmarks();
-
-  const { word, phonetics, meanings } = result;
-
+  const { lists, getLists } = useLists();
+  // Obteniendo funcion para guardar una palabra a una lista creada por el usuario logueado
+  const { createWord, checkExist, wordExist } = useWords();
   const toast = useToast(); // Usar toast de chakra-ui
 
-  console.log("Resultado llamada API 👇🏻 ");
-  console.log(result);
+  // console.log("Resultado llamada API 👇🏻 ");
+  // console.log(result);
 
-  console.log("Resultado llamada 'result.meanings' 👇🏻 ");
-  console.log(result.meanings);
+  // console.log("Resultado llamada 'result.meanings' 👇🏻 ");
+  // console.log(result.meanings);
 
   // Manejar el guardado de una palabra en una lista
   const handleSaveWord = async (listId) => {
     console.log("click sobre guardar palabra");
     //console.log(listId);
     setSavedWord(result);
-    console.log(savedWord);
+    //console.log(savedWord);
 
     if (listId) {
-      console.log(listId);
-      console.log("obteniendo list ID");
-
+      //console.log("listId obtenido");
       checkExist(listId, savedWord.word);
 
       if (wordExist) {
-        console.log("NO SE PUEDE AGREGAR, LA PALABRA YA EXISTE");
         toast({
           title: "La palabra ya existe en la lista.",
           description: "Prueba a agregar la palabra a otra lista.",
@@ -78,8 +66,7 @@ export default function ContentWordPage({ result }) {
           isClosable: true,
         });
       } else {
-        console.log("PUEDES AGREGAR LA PALABRA");
-        createBookmark(listId, savedWord);
+        createWord(listId, savedWord);
         toast({
           title: "Palabra agregada correctamente.",
           description: "La palabra ha sido agregada correctamente a la lista.",
@@ -89,7 +76,7 @@ export default function ContentWordPage({ result }) {
         });
       }
     } else {
-      console.log("no obteniendo list ID");
+      console.log("listId no obtenido");
     }
   };
 
@@ -106,7 +93,6 @@ export default function ContentWordPage({ result }) {
   // Se ejecuta al cargar el componente
   useEffect(() => {
     getLists();
-    //getRelationWordList();
   }, []);
 
   return (

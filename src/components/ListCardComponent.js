@@ -1,3 +1,5 @@
+import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Modal,
   ModalOverlay,
@@ -21,47 +23,29 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-import {
-  BsArrowUpRight,
-  BsPencilSquare,
-  BsTrash,
-  BsBoxArrowUpRight,
-} from "react-icons/bs";
+import { BsPencilSquare, BsTrash, BsBoxArrowUpRight } from "react-icons/bs";
+
 import { useLists } from "../context/ListContext";
-import { useState, useContext, useEffect } from "react";
-import ListFormEditComponent from "./ListFormEditComponent";
-import { Link } from "react-router-dom";
 
 export default function ListCardComponent({ list }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { deleteList, updateList } = useLists();
-
+  // Estados para editar una lista
   const [listName, setListName] = useState("");
   const [isPublica, setIsPublica] = useState();
   const [isChecked, setIsChecked] = useState(false);
 
-  console.log({ list });
-
-  console.log(isChecked);
+  // Funciones para eliminar y editar una lista en concreto que se muestra en "ProfilePage"
+  const { deleteList, updateList } = useLists();
 
   const handleDelete = () => {
-    //alert("Eliminando");
     deleteList(list.id);
   };
 
-  // const handleTogglePublica = () => {
-  //   alert("Cambiar a lista privada");
-  //   updateList(list.id, { publica: !list.publica });
-  // };
-
   const handleOnChange = () => {
     setIsChecked(!isChecked);
-
-    console.log(isChecked);
   };
 
   const handleUpdate = () => {
-    //alert("Actualizar lista");
     updateList(list.id, { name: listName, publica: isChecked });
   };
 
@@ -70,19 +54,6 @@ export default function ListCardComponent({ list }) {
     setListName(list.name);
     setIsPublica(list.publica);
     setIsChecked(list.publica);
-
-    console.log(list.publica);
-
-    console.log(isPublica);
-    console.log(isChecked);
-
-    // if (list.publica) {
-    //   setIsChecked(true);
-    //   console.log(isChecked);
-    // } else {
-    //   setIsChecked(false);
-    //   console.log("no es false");
-    // }
   }, []);
 
   return (
@@ -114,16 +85,8 @@ export default function ListCardComponent({ list }) {
             alignItems="center"
             justifyContent={"space-between"}
             roundedBottom={"sm"}
-            //cursor={"pointer"}
             w="full"
           >
-            {/* <Text fontSize={"md"} fontWeight={"normal"} color="black">
-              <Link to={`/lista/${list.id}`}>Ver más</Link>
-            </Text>
-                        <BsArrowUpRight color="black" />
-
-            */}
-
             <Link to={`/lista/${list.id}`}>
               Ver más
               <IconButton
@@ -218,7 +181,6 @@ export default function ListCardComponent({ list }) {
             <Button mb="5px" colorScheme="teal" mr={3} onClick={handleUpdate}>
               Guardar
             </Button>
-            {/* <Button onClick={onClose}>Cancelar</Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>

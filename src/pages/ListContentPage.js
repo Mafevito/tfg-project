@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Container,
@@ -6,11 +6,9 @@ import {
   Box,
   HStack,
   Text,
-  Divider,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -22,20 +20,15 @@ import {
 import { BsBoxArrowUpRight, BsTrash, BsArrowLeft } from "react-icons/bs";
 
 import { useLists } from "../context/ListContext";
-import { useBookmarks } from "../context/BookmarkContext";
+import { useWords } from "../context/WordsContext";
 import { AuthContext } from "../context/AuthContext";
 
 export default function ListContentPage() {
-  let params = useParams();
-  //console.log(params);
-  const { listId } = useParams();
-
-  const { list, getList } = useLists();
-  const { getRelationWordList, words, deleteWord } = useBookmarks();
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
+  const { list, getList } = useLists();
+  const { getRelationWordList, words, deleteWord } = useWords();
 
-  console.log(words);
-  console.log(userLogged);
+  const { listId } = useParams(); // Obtener listId desde la url
 
   // Para luego comprobar si el user que ha guardado la palabra en una lista es igual al usuario logueado,
   // si es así le aparece la acción de eliminar la palabra de la lista, ya que significa que es propietario de la lista
@@ -44,7 +37,6 @@ export default function ListContentPage() {
   // Para eliminar una palabra de la lista solo si eres propietario de ella
   // se pasa el wordId que corresponde al id de la relacion
   const handleDelete = (wordId) => {
-    alert("Eliminar palabra de la lista" + wordId);
     deleteWord(wordId);
   };
 
@@ -54,22 +46,6 @@ export default function ListContentPage() {
   }, []);
 
   return (
-    // <>
-    //   <h2>ListContentPage</h2>
-    //   {list.map((list) => (
-    //     <>
-    //       <h1>{list.name}</h1>
-    //       <p>{JSON.stringify(list.publica)}</p>
-    //     </>
-    //   ))}
-    //   <h2>Palabras dentro de esta lista:</h2>
-    //   {words.map((word) => (
-    //     <>
-    //       <h1>{word.word}</h1>
-    //     </>
-    //   ))}
-    // </>
-
     <Container maxW="675px">
       <Text textAlign="left">
         <Link to={`/explorar-listas`}>
@@ -99,8 +75,6 @@ export default function ListContentPage() {
           </>
         ))}
       </Box>
-
-      {/* <Divider /> */}
 
       <Box mt="60px">
         {words.length > 0 ? (

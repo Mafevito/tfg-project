@@ -1,11 +1,11 @@
 import { Container } from "@chakra-ui/react";
-import ProfileUserEditFormComponent from "../components/ProfileUserEditFormComponent";
+import ProfileUserDataComponent from "../components/ProfileUserDataComponent";
 import ProfileUserListsComponent from "../components/ProfileUserListsComponent";
 
 export default function ProfilePage() {
   return (
     <Container maxW="675px">
-      <ProfileUserEditFormComponent />
+      <ProfileUserDataComponent />
 
       <ProfileUserListsComponent />
     </Container>

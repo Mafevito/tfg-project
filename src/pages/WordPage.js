@@ -1,25 +1,20 @@
 import { useState, useEffect } from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Container, IconButton, Text } from "@chakra-ui/react";
 import { BsArrowLeft } from "react-icons/bs";
 
 import ContentWordPage2 from "./ContentWord/ContentWordPage2";
 
 export default function WordPage() {
-  let params = useParams();
-  console.log(params);
-  const { listId, word } = useParams();
-  //const history = useHistory();
+  const { listId, word } = useParams(); // Obtener listId y word desde la url
   const [result, setResult] = useState(null);
   const API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-
-  console.log(result);
 
   useEffect(() => {
     fetch(`${API_URL}${word}`)
       .then((response) => {
         if (response.ok) {
-          console.log(response.status);
+          //console.log(response.status);
           return response.json();
         } else {
           console.log("Error-HTTP: " + response.status);
@@ -30,7 +25,6 @@ export default function WordPage() {
       .then((responseJson) => {
         let data = responseJson[0];
         setResult(data);
-        //setError("");
       })
       .catch((error) => console.log(error));
   }, []);
@@ -38,12 +32,6 @@ export default function WordPage() {
   return (
     <>
       <Container maxW="675px">
-        {/* <IconButton
-        aria-label="Search database"
-        icon={<BsArrowLeft />}
-        //onClick={history.goBack}
-      /> */}
-
         <Text textAlign="left">
           <Link to={`/lista/${listId}`}>
             <IconButton

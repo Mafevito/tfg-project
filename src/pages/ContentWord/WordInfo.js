@@ -1,45 +1,13 @@
 import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
   Box,
   Text,
   ListItem,
   ListIcon,
-  OrderedList,
-  UnorderedList,
-  Flex,
-  Spacer,
   Heading,
   List,
   HStack,
 } from "@chakra-ui/react";
-
-import { BsDot } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
-
-// export default function WordInfo({ definitions }) {
-//   console.log(definitions);
-
-//   return (
-//     <>
-//       <h1>word definition</h1>
-
-//       <TabPanels>
-//         {definitions.map((def, index) => {
-//           return <TabPanel>{def.definition}</TabPanel>;
-//         })}
-//       </TabPanels>
-//     </>
-//   );
-// }
 
 export default function WordInfo({
   partOfSpeech,
@@ -47,9 +15,6 @@ export default function WordInfo({
   synonyms,
   antonyms,
 }) {
-  console.log(partOfSpeech);
-  console.log(definitions);
-
   return (
     <>
       <Box>

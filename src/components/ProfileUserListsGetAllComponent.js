@@ -1,22 +1,21 @@
 import { useEffect } from "react";
 import { useLists } from "../context/ListContext";
-import { useBookmarks } from "../context/BookmarkContext";
+import { useWords } from "../context/WordsContext";
 
 import ListCardComponent from "./ListCardComponent";
 
 export default function ProfileUserListsGetAllComponent() {
   // Obteneniendo arreglo de listas asociadas al usuario logueado desde ListContext
   const { lists, getLists, loading } = useLists();
-  const { bookmarks, getBookmarks } = useBookmarks();
-  console.log(lists);
+  const { words, getWords } = useWords();
 
   // Se ejecuta al cargar el componente
   useEffect(() => {
     getLists();
-    getBookmarks();
+    getWords();
   }, []);
 
-  // Segun el estado de "loadig" renderizar una vista u otra
+  // Segun el estado de "loadig" renderizar una vista u otra.
   function renderLists() {
     if (loading) {
       return <p>Cargando..</p>;

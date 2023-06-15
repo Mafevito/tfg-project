@@ -1,40 +1,25 @@
+import { useState } from "react";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Stack,
   Button,
-  Checkbox,
-  Box,
   Flex,
-  Heading,
   Spacer,
-  ButtonGroup,
   useToast,
 } from "@chakra-ui/react";
-import { useState, useContext } from "react";
-// import { supabase } from "../supabase/supabase";
-import { AuthContext } from "../context/AuthContext";
+
 import { useLists } from "../context/ListContext";
 
 export default function ProfileCreateListFormComponent() {
-  const userLogged = useContext(AuthContext);
-  console.log(userLogged);
-  console.log(userLogged.user);
-  console.log(userLogged.user.user);
-  console.log(userLogged.user.user.id);
-
   const [listName, setListName] = useState("");
+  // Funcion "createList" traida desde ListContext
   const { createList, adding } = useLists();
-
   const toast = useToast(); // Para usar el toast de chackra-ui
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(adding);
 
     createList(listName);
 

@@ -51,9 +51,8 @@ export const ListContextProvider = ({ children }) => {
 
     if (error) throw error;
 
-    console.log(data);
+    //console.log(data);
     setList(data);
-    console.log(list);
   };
 
   // Obtener todas las listas para mostrar en pag "/explorar-listas",
@@ -71,7 +70,7 @@ export const ListContextProvider = ({ children }) => {
 
     if (error) throw error;
 
-    console.log(data);
+    //console.log(data);
     setAllLists(data);
 
     setLoading(false); // Al finalizar consultas
@@ -93,21 +92,20 @@ export const ListContextProvider = ({ children }) => {
       // console.log(result);
 
       if (error) throw error;
-      console.log(data);
+      //console.log(data);
 
       setLists([...lists, ...data]);
     } catch (error) {
       console.log(error);
     } finally {
       setAdding(false); // al finalizar se establece siempre en false
-      console.log(adding);
+      //console.log(adding);
     }
   };
 
   // Funcion para eliminar una lista
   // teniendo en cuenta si el usuario logueado es el propietario de la lista
   const deleteList = async (id) => {
-    // console.log(id);
     const user = userLogged.user.user;
     const { error, data } = await supabase
       .from("lists")
@@ -122,7 +120,7 @@ export const ListContextProvider = ({ children }) => {
     // De esta manera no hace falta recargar la pag despues de la eliminacion
     setLists(lists.filter((list) => list.id !== id));
 
-    console.log(data);
+    //console.log(data);
   };
 
   const updateList = async (id, updateFields) => {
@@ -145,7 +143,7 @@ export const ListContextProvider = ({ children }) => {
       )
     );
 
-    console.log(data);
+    //console.log(data);
   };
 
   // Se exporta tanto "lists" como la funcion "getLists" para que sea usado por el componente "ListGetAll"

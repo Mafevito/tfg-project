@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Heading,
   Stack,
@@ -25,87 +24,79 @@ const initialState = {
   password: "",
 };
 
-function LoginPage() {
-  // Instanciar para poder usarlo
-  const navigate = useNavigate();
-
+export default function LoginPage() {
   // Hacer referencia al Custom Hook y desestructurar lo que retorna
   const { formValues, handleInputChange } = useForm(initialState);
   // Para usar la opcion de mostrar password de chakra
   const [showPassword, setShowPassword] = useState(false);
-  // Para obtener la funcion y errores devueltos por servicio Auth de Supabase desde AuthContext
-  const { loginUser, isError, showAlertError, showAlertGood } = useAuth();
+  // Para obtener la funcion loginUser y errores devueltos por servicio Auth de Supabase desde AuthContext
+  const { loginUser, isError, showAlertError } = useAuth();
 
   // Funcion a la que se llama cuando se hace clic en "Enviar"
   const handleSubmit = async (e) => {
     e.preventDefault(); // para evitar que la pag se recargue
 
-    console.log(formValues);
-
     // Desestructuracion de formValues
     const { email, password } = formValues;
 
+    // Se loguea un user
     loginUser(email, password);
   };
 
   return (
-    <>
-      <Container>
-        <Heading fontSize="2xl" mb="20">
-          Iniciar sesión
-        </Heading>
+    <Container>
+      <Heading fontSize="2xl" mb="20">
+        Iniciar sesión
+      </Heading>
 
-        <form onSubmit={handleSubmit}>
-          <Stack spacing={4}>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email</FormLabel>
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={4}>
+          <FormControl id="email" isRequired>
+            <FormLabel>Email</FormLabel>
+            <Input
+              type="email"
+              name="email"
+              placeholder="Introduce tu email"
+              value={formValues.email}
+              onChange={handleInputChange}
+            />
+          </FormControl>
+
+          <FormControl id="password" isRequired>
+            <FormLabel>Contraseña</FormLabel>
+            <InputGroup>
               <Input
-                type="email"
-                name="email"
-                placeholder="Introduce tu email"
-                value={formValues.email}
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Introduce una contraseña"
+                value={formValues.password}
                 onChange={handleInputChange}
               />
-            </FormControl>
+              <InputRightElement h={"full"}>
+                <Button
+                  variant={"ghost"}
+                  onClick={() =>
+                    setShowPassword((showPassword) => !showPassword)
+                  }
+                >
+                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
 
-            <FormControl id="password" isRequired>
-              <FormLabel>Contraseña</FormLabel>
-              <InputGroup>
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Introduce una contraseña"
-                  value={formValues.password}
-                  onChange={handleInputChange}
-                />
-                <InputRightElement h={"full"}>
-                  <Button
-                    variant={"ghost"}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
+          {showAlertError && (
+            <Alert status="error">
+              <AlertIcon />
+              <AlertDescription>{isError}</AlertDescription>
+            </Alert>
+          )}
 
-            {showAlertError && (
-              <Alert status="error">
-                <AlertIcon />
-                <AlertDescription>{isError}</AlertDescription>
-              </Alert>
-            )}
-
-            <Button colorScheme="teal" type="submit">
-              Iniciar sesión
-            </Button>
-          </Stack>
-        </form>
-      </Container>
-    </>
+          <Button colorScheme="teal" type="submit">
+            Iniciar sesión
+          </Button>
+        </Stack>
+      </form>
+    </Container>
   );
 }
-
-export default LoginPage;

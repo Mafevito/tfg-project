@@ -8,7 +8,7 @@ import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "./context/AuthContext";
 import { ListContextProvider } from "./context/ListContext";
-import { BookmarkContextProvider } from "./context/BookmarkContext";
+import { WordContextProvider } from "./context/WordsContext";
 import { FavoriteContextProvider } from "./context/FavoriteContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -19,11 +19,11 @@ root.render(
 
       <AuthProvider>
         <ListContextProvider>
-          <BookmarkContextProvider>
+          <WordContextProvider>
             <FavoriteContextProvider>
               <App />
             </FavoriteContextProvider>
-          </BookmarkContextProvider>
+          </WordContextProvider>
         </ListContextProvider>
       </AuthProvider>
     </BrowserRouter>
