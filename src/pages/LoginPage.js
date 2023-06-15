@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Heading,
   Stack,
@@ -14,11 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase/supabase";
-
 import useForm from "../hooks/useForm";
+import { useAuth } from "../context/AuthContext";
 
 // Declarar initialState
 const initialState = {
@@ -34,10 +33,8 @@ function LoginPage() {
   const { formValues, handleInputChange } = useForm(initialState);
   // Para usar la opcion de mostrar password de chakra
   const [showPassword, setShowPassword] = useState(false);
-  // Para guardar errores devueltos desde servicio de auth de supabase
-  const [isError, setError] = useState("");
-  // Para mostrar la alerta con el error
-  const [showAlertError, setShowAlertError] = useState(false);
+  // Para obtener la funcion y errores devueltos por servicio Auth de Supabase desde AuthContext
+  const { loginUser, isError, showAlertError, showAlertGood } = useAuth();
 
   // Funcion a la que se llama cuando se hace clic en "Enviar"
   const handleSubmit = async (e) => {
@@ -48,23 +45,7 @@ function LoginPage() {
     // Desestructuracion de formValues
     const { email, password } = formValues;
 
-    try {
-      // Servicio auth de supabase para hacer login
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-
-      if (error) throw error;
-
-      console.log("user se ha logueado correctamente");
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      setError(error.message);
-      console.log(isError);
-      setShowAlertError(true);
-    }
+    loginUser(email, password);
   };
 
   return (

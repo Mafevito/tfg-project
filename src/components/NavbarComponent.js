@@ -21,10 +21,11 @@ import {
   useColorMode,
   Center,
 } from "@chakra-ui/react";
-import { Outlet, Link as RouteLink } from "react-router-dom";
+import { Outlet, Link as RouteLink, useNavigate } from "react-router-dom";
 import { createContext, useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { supabase } from "../supabase/supabase";
+import { useAuth } from "../context/AuthContext";
 
 const NavLink = ({ text }) => (
   <Link>
@@ -33,15 +34,16 @@ const NavLink = ({ text }) => (
 );
 
 export default function NavbarComponent() {
-  const userLogged = useContext(AuthContext);
-  console.log(userLogged);
-  console.log(userLogged.user);
+  // const userLogged = useContext(AuthContext);
+  // console.log(userLogged);
+  // console.log(userLogged.user);
 
-  // Funcion auth de supabase para cerrar sesion
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log(error);
-  };
+  const navigate = useNavigate();
+
+  // Para obtener la funcion de servicio Auth de Supabase desde AuthContext
+  const { logoutUser, user } = useAuth();
+
+  console.log(user);
 
   return (
     <Container maxW="1200px">
@@ -56,7 +58,7 @@ export default function NavbarComponent() {
         {/* {userLogged.user != null ? <p>si hay user</p> : <p>no hay user</p>} */}
 
         {/* Segun si hay user logueado se muestra un menu u otro */}
-        {userLogged.user != null ? (
+        {user ? (
           <HStack direction={"row"} spacing={7}>
             <RouteLink to="dashboard">
               <NavLink text="Inicio" />
@@ -99,7 +101,7 @@ export default function NavbarComponent() {
                   </MenuItem>
                 </RouteLink>
 
-                <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+                <MenuItem onClick={logoutUser}>Cerrar sesión</MenuItem>
               </MenuList>
             </Menu>
           </HStack>

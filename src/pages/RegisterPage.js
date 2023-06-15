@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Heading,
   Stack,
@@ -14,12 +15,8 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-import { useState } from "react";
-
-import { supabase } from "../supabase/supabase";
-
 import useForm from "../hooks/useForm";
-import { registerWithEmail } from "../supabase/authService";
+import { useAuth } from "../context/AuthContext";
 
 // Declarar initialState
 const initialState = {
@@ -35,11 +32,9 @@ function RegisterPage() {
 
   // Para usar la opcion de mostrar password de chakra
   const [showPassword, setShowPassword] = useState(false);
-  // Para guardar errores devueltos desde servicio de auth de supabase
-  const [isError, setError] = useState("");
-  // Para mostrar la alerta con el error
-  const [showAlertError, setShowAlertError] = useState(false);
-  const [showAlertGood, setShowAlertGood] = useState(false);
+
+  // Para obtener la funcion y errores devueltos por servicio Auth de Supabase desde AuthContext
+  const { registerUser, isError, showAlertError, showAlertGood } = useAuth();
 
   // Funcion a la que se llama cuando se hace clic en "Enviar"
   const handleSubmit = async (e) => {
@@ -50,40 +45,7 @@ function RegisterPage() {
     // Desestructuracion de formValues
     const { name, email, username, password } = formValues;
 
-    try {
-      // Servicio auth de supabase para crear user
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          data: {
-            name: name,
-            username: username,
-          },
-        },
-      });
-
-      if (error) throw error;
-      setShowAlertGood(true);
-
-      console.log("user se ha creado correctamente");
-      console.log(data);
-
-      // obtener user autentificado
-      if (data) {
-        const user = supabase.auth.getUser();
-
-        const data = {
-          id: user.id,
-          name: user.name,
-        };
-      }
-    } catch (error) {
-      console.log(error);
-      setError(error.message);
-      console.log(isError);
-      setShowAlertError(true);
-    }
+    registerUser(email, password, name, username);
   };
 
   return (
