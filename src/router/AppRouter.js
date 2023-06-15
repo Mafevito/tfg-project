@@ -9,6 +9,7 @@ import DashboardPage from "../pages/DashboardPage";
 import ProfilePage from "../pages/ProfilePage";
 import ListContentPage from "../pages/ListContentPage";
 import ExploreListsPage from "../pages/ExploreListsPage";
+import WordPage from "../pages/WordPage";
 
 import { clientsupabase } from "../supabase/supabase";
 
@@ -63,6 +64,7 @@ function AppRouter() {
           <Route path="perfil" element={<ProfilePage />} />
           <Route path="lista/:listId" element={<ListContentPage />} />
           <Route path="explorar-listas" element={<ExploreListsPage />} />
+          <Route path="lista/:listId/word/:word" element={<WordPage />} />
         </Route>
       </Routes>
     </>

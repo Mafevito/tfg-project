@@ -136,6 +136,26 @@ export const BookmarkContextProvider = ({ children }) => {
     console.log(data);
   };
 
+  // Funcion para eliminar una palabra de una lista
+  // teniendo en cuenta si el usuario logueado es el propietario de la lista
+  const deleteWord = async (id) => {
+    const user = userLogged.user.user;
+    const { error, data } = await supabase
+      .from("words")
+      .delete()
+      .eq("userId", user.id)
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    // Para que en "lists" se muestren todas menos la eliminada.
+    // De esta manera no hace falta recargar la pag despues de la eliminacion
+    setWords(words.filter((word) => word.id !== id));
+
+    console.log(data);
+  };
+
   return (
     <BookmarkContext.Provider
       value={{
@@ -146,6 +166,7 @@ export const BookmarkContextProvider = ({ children }) => {
         words,
         checkExist,
         wordExist,
+        deleteWord,
       }}
     >
       {children}

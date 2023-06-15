@@ -1,3 +1,4 @@
+import { useEffect, useState, useContext } from "react";
 import {
   Container,
   Box,
@@ -6,24 +7,10 @@ import {
   Button,
   IconButton,
   HStack,
-  Spacer,
   Flex,
-  ButtonGroup,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
-  Avatar,
   Stack,
   StackDivider,
   Popover,
@@ -31,24 +18,18 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
+  useToast,
 } from "@chakra-ui/react";
 import { FaPlay, FaPlus } from "react-icons/fa";
 import { BsBookmarkPlus } from "react-icons/bs";
 import { HiSpeakerWave } from "react-icons/hi2";
-import WordInfo from "./WordInfo";
 
 import { AuthContext } from "../../context/AuthContext";
-
 import { useLists } from "../../context/ListContext";
 import { useBookmarks } from "../../context/BookmarkContext";
-import { useEffect, useState, useContext } from "react";
-
-import { BsThreeDotsVertical, BsChatSquareQuote } from "react-icons/bs";
-import { RiShutDownLine, RiRestartLine, RiFileShredLine } from "react-icons/ri";
+import WordInfo from "./WordInfo";
 
 export default function ContentWordPage({ result }) {
   // Estado para poder guardar "result" que es igual a toda la info de la palabra
@@ -56,9 +37,6 @@ export default function ContentWordPage({ result }) {
 
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
   console.log(userLogged);
-  console.log(userLogged.user);
-  console.log(userLogged.user.user);
-  console.log(userLogged.user.user.id);
 
   // Obteneniendo arreglo de listas asociadas al usuario logueado desde ListContext
   const { lists, getLists, loading, updateList } = useLists();
@@ -68,6 +46,8 @@ export default function ContentWordPage({ result }) {
     useBookmarks();
 
   const { word, phonetics, meanings } = result;
+
+  const toast = useToast(); // Usar toast de chakra-ui
 
   console.log("Resultado llamada API 👇🏻 ");
   console.log(result);
@@ -81,76 +61,46 @@ export default function ContentWordPage({ result }) {
     //console.log(listId);
     setSavedWord(result);
     console.log(savedWord);
-    console.log(savedWord.word);
-    console.log(listId);
 
     if (listId) {
+      console.log(listId);
       console.log("obteniendo list ID");
-      // getRelationWordList(listId);
-
-      // {
-      //   words.map((word) => (
-      //     <>
-      //       {savedWord.word == word.word && listId == word.listId
-      //         ? console.log("ya existe")
-      //         : createBookmark(listId, savedWord)}
-      //     </>
-      //   ));
-      // }
 
       checkExist(listId, savedWord.word);
 
       if (wordExist) {
         console.log("NO SE PUEDE AGREGAR, LA PALABRA YA EXISTE");
+        toast({
+          title: "La palabra ya existe en la lista.",
+          description: "Prueba a agregar la palabra a otra lista.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       } else {
         console.log("PUEDES AGREGAR LA PALABRA");
         createBookmark(listId, savedWord);
+        toast({
+          title: "Palabra agregada correctamente.",
+          description: "La palabra ha sido agregada correctamente a la lista.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
       }
     } else {
       console.log("no obteniendo list ID");
     }
+  };
 
-    // getRelationWordList(listId);
-
-    // {
-    //   words.map((word) => (
-    //     <>
-    //       {savedWord.word == word.word && listId == word.listId
-    //         ? console.log("ya existe")
-    //         : createBookmark(listId, savedWord)}
-    //     </>
-    //   ));
-    // }
-    //createBookmark(listId, savedWord);
-
-    // saveRelationWordList(savedWord, listId);
-    // updateList(listId, { words: savedWord });
-
-    // updateList(listId, { bookmarkedWords: savedWord });
-
-    // const { error, data } = await supabase
-    //   .from("lists")
-    //   .insert({
-    //     name: listName,
-    //     userId: user.id,
-    //   })
-    //   .select();
-
-    // try {
-    //   // Servicio auth de supabase para hacer login
-    //   const user = userLogged.user.user;
-
-    //   const { data, error } = await supabase
-    //     .from("bookmarks")
-    //     .insert({ userId: user.id })
-    //     .select();
-
-    //   if (error) throw error;
-
-    //   console.log(data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  // Para reprodudir el audio correspondiente a la pronunciacion de la palabra
+  const playAudio = () => {
+    try {
+      let audio = new Audio(phonetics[0].audio);
+      audio.play();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Se ejecuta al cargar el componente
@@ -162,36 +112,6 @@ export default function ContentWordPage({ result }) {
   return (
     <>
       <Container>
-        {/* <Flex minWidth="max-content" alignItems="center" gap="2" mt="50px">
-          <Box p="2" align="left">
-            <Heading as="h3" size="lg">
-              {word}
-            </Heading>
-
-            <HStack>
-              {phonetics.map((item, index) => {
-                return (
-                  <Text fontSize="md" color="gray">
-                    {item.text}
-                  </Text>
-                );
-              })}
-            </HStack>
-          </Box>
-          <Spacer />
-          <IconButton
-            colorScheme="blue"
-            aria-label="Search database"
-            icon={<FaPlay />}
-          />
-
-          <IconButton
-            colorScheme="blue"
-            aria-label="Search database"
-            icon={<FaPlus />}
-          />
-        </Flex> */}
-
         <Card mt="50px" maxW="xl">
           <CardHeader>
             <Flex spacing="4">
@@ -217,19 +137,12 @@ export default function ContentWordPage({ result }) {
                 aria-label="Pronunciación"
                 icon={<HiSpeakerWave />}
                 mr="10px"
+                onClick={playAudio}
               />
-
-              {/* <IconButton
-                colorScheme="gray"
-                aria-label="Guardar palabra"
-                icon={<BsBookmarkPlus />}
-                onClick={handleSaveWord}
-              /> */}
 
               {/* Mostrar popover para "Añadir palabra a una lista existente" */}
               <Popover placement="right">
                 <PopoverTrigger>
-                  {/* <Button>Trigger</Button> */}
                   <IconButton
                     colorScheme="gray"
                     aria-label="Guardar palabra"
@@ -239,28 +152,13 @@ export default function ContentWordPage({ result }) {
                 <PopoverContent>
                   <PopoverArrow />
                   <PopoverCloseButton />
-                  <PopoverHeader>Añadir a lista</PopoverHeader>
+                  <PopoverHeader>Añadir a lista.</PopoverHeader>
                   <PopoverBody>
                     <Stack>
-                      {/* <Button
-                        w="194px"
-                        variant="ghost"
-                        rightIcon={<BsChatSquareQuote />}
-                        justifyContent="space-between"
-                        fontWeight="normal"
-                        fontSize="sm"
-                      >
-                        Request Access
-                      </Button> */}
-
                       {lists.map((list) => (
                         <>
-                          {/* <h1>{list.name}</h1> */}
-
                           <Button
-                            // w="194px"
                             variant="ghost"
-                            // rightIcon={<BsChatSquareQuote />}
                             justifyContent="space-between"
                             fontWeight="normal"
                             fontSize="sm"
@@ -276,10 +174,6 @@ export default function ContentWordPage({ result }) {
               </Popover>
             </Flex>
           </CardHeader>
-
-          {/* <Heading as="h4" size="md" textAlign="left" mb="20px" mt="50px">
-            Definiciones
-          </Heading> */}
 
           <CardBody align="left">
             <Stack divider={<StackDivider />} spacing="4">

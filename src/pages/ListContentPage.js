@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { useParams, Link } from "react-router-dom";
 import {
   Container,
   Heading,
@@ -16,24 +16,37 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  IconButton,
+  Flex,
 } from "@chakra-ui/react";
+import { BsBoxArrowUpRight, BsTrash } from "react-icons/bs";
 
 import { useLists } from "../context/ListContext";
 import { useBookmarks } from "../context/BookmarkContext";
+import { AuthContext } from "../context/AuthContext";
 
 export default function ListContentPage() {
   let params = useParams();
   //console.log(params);
   const { listId } = useParams();
 
-  // console.log(listId);
-
-  // const [list, setList] = useState(null);
-
   const { list, getList } = useLists();
-  const { getRelationWordList, words } = useBookmarks();
+  const { getRelationWordList, words, deleteWord } = useBookmarks();
+  const userLogged = useContext(AuthContext); // Obtener el usuario logueado
 
   console.log(words);
+  console.log(userLogged);
+
+  // Para luego comprobar si el user que ha guardado la palabra en una lista es igual al usuario logueado,
+  // si es así le aparece la acción de eliminar la palabra de la lista, ya que significa que es propietario de la lista
+  const user = userLogged.user.user.id;
+
+  // Para eliminar una palabra de la lista solo si eres propietario de ella
+  // se pasa el wordId que corresponde al id de la relacion
+  const handleDelete = (wordId) => {
+    alert("Eliminar palabra de la lista" + wordId);
+    deleteWord(wordId);
+  };
 
   useEffect(() => {
     getList(listId);
@@ -81,7 +94,7 @@ export default function ListContentPage() {
               <Tr>
                 <Th>#</Th>
                 <Th>Palabra</Th>
-                <Th isNumeric></Th>
+                <Th isNumeric>Acción</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -89,7 +102,33 @@ export default function ListContentPage() {
                 <Tr>
                   <Td>{index + 1}</Td>
                   <Td>{word.word}</Td>
-                  <Td isNumeric>boton</Td>
+                  <Td isNumeric>
+                    <Flex alignItems="center" justifyContent={"end"} gap="2">
+                      <Link to={`/lista/${listId}/word/${word.word}`}>
+                        <IconButton
+                          size="xs"
+                          color="black"
+                          aria-label="Ver más sobre la palabra"
+                          icon={<BsBoxArrowUpRight />}
+                        />
+                      </Link>
+                      {word.userId === user ? (
+                        <IconButton
+                          size="xs"
+                          aria-label="Eliminar lista"
+                          color="white"
+                          bg={"red.400"}
+                          _hover={{
+                            bg: "red.500",
+                          }}
+                          icon={<BsTrash />}
+                          onClick={() => handleDelete(word.id)}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </Flex>
+                  </Td>
                 </Tr>
               ))}
             </Tbody>
