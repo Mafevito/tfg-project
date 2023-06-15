@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { useFavorites } from "../context/FavoriteContext";
 import ListCardFavComponent from "./ListCardFavComponent";
+import ExploreListCardFavoriteComponent from "../components/ExploreListCardFavoriteComponent";
 
 export default function ProfileUserListsGetAllFavoritesComponent() {
   // Obteneniendo arreglo de listas asociadas como favorito al usuario logueado desde FavoriteContext
   const { favorites, getFavorites, loading } = useFavorites();
+
+  console.log(favorites);
 
   // Se ejecuta al cargar el componente
   useEffect(() => {
@@ -22,6 +25,7 @@ export default function ProfileUserListsGetAllFavoritesComponent() {
         <>
           {favorites.map((fav) => (
             <ListCardFavComponent fav={fav} />
+            // <ExploreListCardFavoriteComponent list={list} />
           ))}
         </>
       );
