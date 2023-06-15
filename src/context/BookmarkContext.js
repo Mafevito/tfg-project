@@ -16,6 +16,7 @@ export const BookmarkContextProvider = ({ children }) => {
   const [bookmarks, setBookmarks] = useState([]);
   const [words, setWords] = useState([]);
   const [wordExist, setWordExist] = useState(false);
+  const [oneWord, setOneWord] = useState([]);
 
   // Funcion para obtener los bookmarks asociados al usuario logueado
   // const getBookmarks = async () => {
@@ -156,6 +157,23 @@ export const BookmarkContextProvider = ({ children }) => {
     console.log(data);
   };
 
+  const getWord = async (listId, word) => {
+    const user = userLogged.user.user;
+    const { error, data } = await supabase
+      .from("words")
+      .select()
+      //.eq("userId", user.id)
+      .eq("listId", listId)
+      .eq("word", word);
+    //.select();
+
+    if (error) throw error;
+
+    console.log(data);
+    setOneWord(data);
+    console.log(oneWord);
+  };
+
   return (
     <BookmarkContext.Provider
       value={{
@@ -167,6 +185,8 @@ export const BookmarkContextProvider = ({ children }) => {
         checkExist,
         wordExist,
         deleteWord,
+        getWord,
+        oneWord,
       }}
     >
       {children}

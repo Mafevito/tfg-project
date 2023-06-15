@@ -3,7 +3,7 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { Container, IconButton, Text } from "@chakra-ui/react";
 import { BsArrowLeft } from "react-icons/bs";
 
-import ContentWordPage from "./ContentWord/ContentWordPage";
+import ContentWordPage2 from "./ContentWord/ContentWordPage2";
 
 export default function WordPage() {
   let params = useParams();
@@ -58,7 +58,7 @@ export default function WordPage() {
         </Text>
       </Container>
 
-      {result ? <ContentWordPage {...{ result }} /> : ""}
+      {result ? <ContentWordPage2 {...{ result }} /> : ""}
     </>
   );
 }
