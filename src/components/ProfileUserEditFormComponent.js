@@ -44,6 +44,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { BsPencilSquare } from "react-icons/bs";
 import { AuthContext } from "../context/AuthContext";
 import { supabase } from "../supabase/supabase";
+import UserDataFormEditComponent from "./UserDataFormEditComponent";
 
 export default function ProfileUserEditFormComponent() {
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
@@ -57,37 +58,37 @@ export default function ProfileUserEditFormComponent() {
   console.log(userLogged);
   console.log(userLogged.user.user.user_metadata);
 
-  const handleUpdate = async (e) => {
-    e.preventDefault(); // para evitar que la pag se recargue
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // para evitar que la pag se recargue
 
-    console.log("edit user");
+  //   console.log("edit user");
 
-    try {
-      // Servicio auth de supabase para editar user
-      const { data, error } = await supabase.auth.updateUser({
-        data: {
-          name: name,
-          username: username,
-        },
-      });
+  //   try {
+  //     // Servicio auth de supabase para editar user
+  //     const { data, error } = await supabase.auth.updateUser({
+  //       data: {
+  //         name: name,
+  //         username: username,
+  //       },
+  //     });
 
-      if (error) throw error;
+  //     if (error) throw error;
 
-      console.log("user se ha actualizado correctamente");
-      console.log(data);
+  //     console.log("user se ha actualizado correctamente");
+  //     console.log(data);
 
-      // Si el user se ha editado correctamente se muestra un toast
-      toast({
-        title: "Datos actualizados.",
-        description: "Tus datos de usuario se han actualizado correctamente.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     // Si el user se ha editado correctamente se muestra un toast
+  //     toast({
+  //       title: "Datos actualizados.",
+  //       description: "Tus datos de usuario se han actualizado correctamente.",
+  //       status: "success",
+  //       duration: 9000,
+  //       isClosable: true,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     // Establece los valores del usuario que actualmente tiene para poder editar
@@ -126,33 +127,10 @@ export default function ProfileUserEditFormComponent() {
               <ModalHeader>Editar datos de usuario.</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <form>
-                  <Stack spacing={4}>
-                    <FormControl id="name">
-                      <FormLabel>Nombre</FormLabel>
-                      <Input
-                        type="text"
-                        name="name"
-                        placeholder="Edita tu nombre"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </FormControl>
-                    <FormControl id="username">
-                      <FormLabel optionalIndicator>Nombre de usuario</FormLabel>
-                      <Input
-                        type="text"
-                        name="username"
-                        placeholder="Edita tu nombre de usuario"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                      />
-                    </FormControl>
-                  </Stack>
-                </form>
+                <UserDataFormEditComponent />
               </ModalBody>
 
-              <ModalFooter mb="10px">
+              {/* <ModalFooter mb="10px">
                 <Stack
                   spacing={6}
                   direction={["column", "row"]}
@@ -182,7 +160,7 @@ export default function ProfileUserEditFormComponent() {
                     Guardar
                   </Button>
                 </Stack>
-              </ModalFooter>
+              </ModalFooter> */}
             </ModalContent>
           </Modal>
         </Flex>

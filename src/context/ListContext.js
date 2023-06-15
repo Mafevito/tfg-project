@@ -137,6 +137,14 @@ export const ListContextProvider = ({ children }) => {
 
     if (error) throw error;
 
+    // Para que en "lists" se muestren los datos ya actualizados.
+    // De esta manera no hace falta recargar la pag para ver los datos actualizados.
+    setLists(
+      lists.map((list) =>
+        list.id === id ? { ...list, ...updateFields } : list
+      )
+    );
+
     console.log(data);
   };
 

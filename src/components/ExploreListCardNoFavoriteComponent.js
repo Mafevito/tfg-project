@@ -10,8 +10,14 @@ import {
   useColorModeValue,
   HStack,
   Checkbox,
+  IconButton,
 } from "@chakra-ui/react";
-import { BsArrowUpRight, BsHeartFill, BsHeart } from "react-icons/bs";
+import {
+  BsArrowUpRight,
+  BsHeartFill,
+  BsHeart,
+  BsBoxArrowUpRight,
+} from "react-icons/bs";
 import { useFavorites } from "../context/FavoriteContext";
 
 export default function ListCardNoFavoriteComponent({ list }) {
@@ -75,7 +81,7 @@ export default function ListCardNoFavoriteComponent({ list }) {
           Creado por @{list.user.name}
         </Text>
 
-        <HStack borderTop={"1px"} color="gray.200">
+        <HStack borderTop={"1px"} borderColor="gray.200">
           <Flex
             p="10px"
             alignItems="center"
@@ -84,11 +90,23 @@ export default function ListCardNoFavoriteComponent({ list }) {
             cursor={"pointer"}
             w="full"
           >
-            <Text fontSize={"md"} fontWeight={"normal"} color="black">
+            {/* <Text fontSize={"md"} fontWeight={"normal"} color="black">
               <Link to={`/lista/${list.id}`}>Ver más</Link>
             </Text>
 
-            <BsArrowUpRight color="black" />
+            <BsArrowUpRight color="black" /> */}
+
+            <Link to={`/lista/${list.id}`}>
+              Ver más
+              <IconButton
+                size="xs"
+                color="black"
+                colorScheme="white"
+                aria-label="Ver más sobre la palabra"
+                ml="5px"
+                icon={<BsBoxArrowUpRight />}
+              />
+            </Link>
           </Flex>
           <Flex
             p={4}
@@ -96,6 +114,7 @@ export default function ListCardNoFavoriteComponent({ list }) {
             justifyContent={"space-between"}
             roundedBottom={"sm"}
             borderLeft={"1px"}
+            borderColor="gray.200"
             cursor="pointer"
             onClick={() => handleFavoriteList()}
           >

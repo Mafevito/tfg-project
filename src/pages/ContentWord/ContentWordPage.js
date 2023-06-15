@@ -111,7 +111,7 @@ export default function ContentWordPage({ result }) {
 
   return (
     <>
-      <Container>
+      <Container maxW="675px">
         <Card mt="50px" maxW="xl">
           <CardHeader>
             <Flex spacing="4">

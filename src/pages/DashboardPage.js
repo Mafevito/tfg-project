@@ -124,6 +124,7 @@ export default function DashboardPage() {
                 size="md"
                 value={word}
                 onChange={(e) => setWord(e.target.value)}
+                focusBorderColor="#369496"
               />
 
               <Button colorScheme="teal" onClick={searchWord} ml="10px">

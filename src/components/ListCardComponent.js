@@ -18,9 +18,15 @@ import {
   Flex,
   IconButton,
   Tag,
+  Stack,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-import { BsArrowUpRight, BsPencilSquare, BsTrash } from "react-icons/bs";
+import {
+  BsArrowUpRight,
+  BsPencilSquare,
+  BsTrash,
+  BsBoxArrowUpRight,
+} from "react-icons/bs";
 import { useLists } from "../context/ListContext";
 import { useState, useContext, useEffect } from "react";
 import ListFormEditComponent from "./ListFormEditComponent";
@@ -102,20 +108,33 @@ export default function ListCardComponent({ list }) {
           )}
         </Box>
 
-        <HStack borderTop={"1px"} color="gray.200">
+        <HStack borderTop={"1px"} borderColor="gray.200">
           <Flex
             p="10px"
             alignItems="center"
             justifyContent={"space-between"}
             roundedBottom={"sm"}
-            cursor={"pointer"}
+            //cursor={"pointer"}
             w="full"
           >
-            <Text fontSize={"md"} fontWeight={"normal"} color="black">
+            {/* <Text fontSize={"md"} fontWeight={"normal"} color="black">
               <Link to={`/lista/${list.id}`}>Ver más</Link>
             </Text>
+                        <BsArrowUpRight color="black" />
 
-            <BsArrowUpRight color="black" />
+            */}
+
+            <Link to={`/lista/${list.id}`}>
+              Ver más
+              <IconButton
+                size="xs"
+                color="black"
+                colorScheme="white"
+                aria-label="Ver más sobre la palabra"
+                ml="5px"
+                icon={<BsBoxArrowUpRight />}
+              />
+            </Link>
           </Flex>
           <Flex
             p="10px"
@@ -123,6 +142,7 @@ export default function ListCardComponent({ list }) {
             justifyContent={"space-between"}
             roundedBottom={"sm"}
             borderLeft={"1px"}
+            borderColor="gray.200"
             gap="2"
           >
             {/* Boton que abre modal para editar una lista */}
@@ -155,45 +175,50 @@ export default function ListCardComponent({ list }) {
           <ModalHeader>Editar lista</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Nombre</FormLabel>
-              <Input
-                type="text"
-                size="md"
-                mame="name"
-                placeholder="Escribe otro nombre para la lista"
-                value={listName}
-                onChange={(e) => setListName(e.target.value)}
-              />
-            </FormControl>
+            <form>
+              <Stack spacing={4}>
+                <FormControl>
+                  <FormLabel>Nombre</FormLabel>
+                  <Input
+                    type="text"
+                    size="md"
+                    mame="name"
+                    placeholder="Escribe otro nombre para la lista"
+                    value={listName}
+                    onChange={(e) => setListName(e.target.value)}
+                    focusBorderColor="#369496"
+                  />
+                </FormControl>
 
-            <Text mt="15px">
-              Tipo:{" "}
-              {isPublica ? (
-                <Tag colorScheme="green">Publica</Tag>
-              ) : (
-                <Tag>Privada</Tag>
-              )}
-            </Text>
+                <Text>
+                  Tipo:{" "}
+                  {isPublica ? (
+                    <Tag colorScheme="green">Publica</Tag>
+                  ) : (
+                    <Tag>Privada</Tag>
+                  )}
+                </Text>
 
-            <FormControl mt="25px">
-              <Checkbox
-                name="publica"
-                checked={isChecked}
-                onChange={handleOnChange}
-              >
-                {isPublica
-                  ? "Hacer la lista privada"
-                  : "Hacer la lista publica"}
-              </Checkbox>
-            </FormControl>
+                <FormControl>
+                  <Checkbox
+                    name="publica"
+                    checked={isChecked}
+                    onChange={handleOnChange}
+                  >
+                    {isPublica
+                      ? "Hacer la lista privada"
+                      : "Hacer la lista publica"}
+                  </Checkbox>
+                </FormControl>
+              </Stack>
+            </form>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleUpdate}>
+            <Button mb="5px" colorScheme="teal" mr={3} onClick={handleUpdate}>
               Guardar
             </Button>
-            <Button onClick={onClose}>Cancelar</Button>
+            {/* <Button onClick={onClose}>Cancelar</Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>

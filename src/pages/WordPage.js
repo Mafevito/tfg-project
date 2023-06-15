@@ -37,7 +37,7 @@ export default function WordPage() {
 
   return (
     <>
-      <Container>
+      <Container maxW="675px">
         {/* <IconButton
         aria-label="Search database"
         icon={<BsArrowLeft />}

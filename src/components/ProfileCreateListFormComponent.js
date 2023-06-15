@@ -52,33 +52,32 @@ export default function ProfileCreateListFormComponent() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack>
-        <Box align="left">
-          <FormControl>
-            <FormLabel>Nombre</FormLabel>
-            <Input
-              type="text"
-              size="md"
-              mame="name"
-              placeholder="Escribe un nombre para la lista"
-              value={listName}
-              onChange={(e) => setListName(e.target.value)}
-            />
-          </FormControl>
+      <Stack spacing={4}>
+        <FormControl id="name">
+          <FormLabel>Nombre</FormLabel>
+          <Input
+            type="text"
+            size="md"
+            mame="name"
+            placeholder="Escribe un nombre para la lista"
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
+            focusBorderColor="#369496"
+          />
+        </FormControl>
 
-          <Flex minWidth="max-content" alignItems="center" gap="2">
-            <Spacer />
-            <Button
-              mt="20px"
-              mb="10px"
-              colorScheme="teal"
-              type="submit"
-              disabled={adding}
-            >
-              {adding ? "Añadiendo.." : "Crear"}
-            </Button>
-          </Flex>
-        </Box>
+        <Flex minWidth="max-content" alignItems="center" gap="2">
+          <Spacer />
+          <Button
+            mt="30px"
+            mb="10px"
+            colorScheme="teal"
+            type="submit"
+            disabled={adding}
+          >
+            {adding ? "Añadiendo.." : "Crear"}
+          </Button>
+        </Flex>
       </Stack>
     </form>
   );

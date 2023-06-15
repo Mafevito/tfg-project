@@ -19,7 +19,7 @@ import {
   IconButton,
   Flex,
 } from "@chakra-ui/react";
-import { BsBoxArrowUpRight, BsTrash } from "react-icons/bs";
+import { BsBoxArrowUpRight, BsTrash, BsArrowLeft } from "react-icons/bs";
 
 import { useLists } from "../context/ListContext";
 import { useBookmarks } from "../context/BookmarkContext";
@@ -71,69 +71,89 @@ export default function ListContentPage() {
     // </>
 
     <Container maxW="675px">
-      {list.map((list) => (
-        <Box p="2" align="left">
-          <Heading as="h4" size="md" mb="5px">
-            {list.name}
-          </Heading>
+      <Text textAlign="left">
+        <Link to={`/explorar-listas`}>
+          <IconButton
+            size="sm"
+            colorScheme="white"
+            color="black"
+            aria-label="Volver atrás"
+            icon={<BsArrowLeft />}
+          />
+          Volver atrás
+        </Link>
+      </Text>
 
-          <HStack>
-            <Text color="gray" fontSize="md">
-              Creado por @{list.user.name} · {words.length} palabras
-            </Text>
-          </HStack>
-        </Box>
-      ))}
-      <Divider />
+      <Box mt="50px" p="2" align="left">
+        {list.map((list) => (
+          <>
+            <Heading as="h4" size="md" mb="5px">
+              {list.name}
+            </Heading>
+
+            <HStack>
+              <Text color="gray" fontSize="md">
+                Creado por @{list.user.name} · {words.length} palabras
+              </Text>
+            </HStack>
+          </>
+        ))}
+      </Box>
+
+      {/* <Divider /> */}
 
       <Box mt="60px">
-        <TableContainer>
-          <Table variant="simple">
-            <TableCaption>Palabras que contiene esta lista.</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>#</Th>
-                <Th>Palabra</Th>
-                <Th isNumeric>Acción</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {words.map((word, index) => (
+        {words.length > 0 ? (
+          <TableContainer>
+            <Table variant="simple">
+              <TableCaption>Palabras que contiene esta lista.</TableCaption>
+              <Thead>
                 <Tr>
-                  <Td>{index + 1}</Td>
-                  <Td>{word.word}</Td>
-                  <Td isNumeric>
-                    <Flex alignItems="center" justifyContent={"end"} gap="2">
-                      <Link to={`/lista/${listId}/word/${word.word}`}>
-                        <IconButton
-                          size="xs"
-                          color="black"
-                          aria-label="Ver más sobre la palabra"
-                          icon={<BsBoxArrowUpRight />}
-                        />
-                      </Link>
-                      {word.userId === user ? (
-                        <IconButton
-                          size="xs"
-                          aria-label="Eliminar lista"
-                          color="white"
-                          bg={"red.400"}
-                          _hover={{
-                            bg: "red.500",
-                          }}
-                          icon={<BsTrash />}
-                          onClick={() => handleDelete(word.id)}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </Flex>
-                  </Td>
+                  <Th>#</Th>
+                  <Th>Palabra</Th>
+                  <Th isNumeric>Acción</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+              </Thead>
+              <Tbody>
+                {words.map((word, index) => (
+                  <Tr>
+                    <Td>{index + 1}</Td>
+                    <Td>{word.word}</Td>
+                    <Td isNumeric>
+                      <Flex alignItems="center" justifyContent={"end"} gap="2">
+                        <Link to={`/lista/${listId}/word/${word.word}`}>
+                          <IconButton
+                            size="xs"
+                            color="black"
+                            aria-label="Ver más sobre la palabra"
+                            icon={<BsBoxArrowUpRight />}
+                          />
+                        </Link>
+                        {word.userId === user ? (
+                          <IconButton
+                            size="xs"
+                            aria-label="Eliminar lista"
+                            color="white"
+                            bg={"red.400"}
+                            _hover={{
+                              bg: "red.500",
+                            }}
+                            icon={<BsTrash />}
+                            onClick={() => handleDelete(word.id)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Flex>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        ) : (
+          "Esta lista no contiene palabras."
+        )}
       </Box>
     </Container>
   );

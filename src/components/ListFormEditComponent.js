@@ -63,6 +63,7 @@ export default function ListFormEditComponent() {
               placeholder="Escribe un nombre para la lista"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
+              focusBorderColor="#369496"
             />
             {/* <Checkbox defaultChecked mt="10px" mb="15px">
               Privada

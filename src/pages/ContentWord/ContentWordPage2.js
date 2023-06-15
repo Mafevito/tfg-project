@@ -143,7 +143,7 @@ export default function ContentWordPage2({ result }) {
 
   return (
     <>
-      <Container>
+      <Container maxW="675px">
         {/* {oneWord[0].userId} ////{user} */}
         <Card mt="50px" maxW="xl">
           <CardHeader>
