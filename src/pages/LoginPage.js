@@ -59,6 +59,7 @@ export default function LoginPage() {
               placeholder="Introduce tu email"
               value={formValues.email}
               onChange={handleInputChange}
+              focusBorderColor="#369496"
             />
           </FormControl>
 
@@ -71,6 +72,7 @@ export default function LoginPage() {
                 placeholder="Introduce una contraseña"
                 value={formValues.password}
                 onChange={handleInputChange}
+                focusBorderColor="#369496"
               />
               <InputRightElement h={"full"}>
                 <Button

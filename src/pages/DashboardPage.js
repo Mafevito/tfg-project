@@ -33,8 +33,6 @@ export default function DashboardPage() {
     // Validar valor de input
     if (word.length === 0) {
       setInputError("Debes introducir una palabra");
-    } else if (word.indexOf(" ") >= 0) {
-      setInputError("La palabra introducida no puedo contener espacios vacios");
     } else {
       setInputError("");
       inputValid = true;
@@ -65,12 +63,12 @@ export default function DashboardPage() {
 
   return (
     <>
-      <Container maxW="600px">
+      <Container maxW="675px">
         <Stack spacing={1} mb="30px">
-          <Heading fontSize="2xl">Búsqueda de palabras</Heading>
+          {/* <Heading fontSize="2xl">Búsqueda de palabras</Heading> */}
 
-          <Text>
-            Busca significados y guárdalos para consultarlos rápidamente
+          <Text textAlign="left">
+            Introduce una palabra para obtener su significado y más.
           </Text>
         </Stack>
         <form onSubmit={searchWord}>
@@ -78,7 +76,7 @@ export default function DashboardPage() {
             <InputGroup>
               <Input
                 variant="filled"
-                placeholder="¿Qué palabra quieres buscar?"
+                placeholder="Introduce una palabra.."
                 size="md"
                 value={word}
                 onChange={(e) => setWord(e.target.value)}

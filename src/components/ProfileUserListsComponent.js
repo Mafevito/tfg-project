@@ -48,6 +48,7 @@ export default function ProfileUserListsComponent() {
               <Box>
                 <Button
                   mt="15px"
+                  mb="10px"
                   leftIcon={<FaPlus />}
                   colorScheme="teal"
                   variant="outline"

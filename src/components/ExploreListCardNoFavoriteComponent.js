@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Box, Heading, Text, Flex, HStack, IconButton } from "@chakra-ui/react";
 import { BsHeartFill, BsHeart, BsBoxArrowUpRight } from "react-icons/bs";
@@ -10,16 +10,23 @@ export default function ListCardNoFavoriteComponent({ list }) {
 
   const handleFavoriteList = async () => {
     if (isfavorite) {
-      // console.log("quitar fav");
+      console.log("quitar fav");
+      deleteFavorite(list.id);
       setIsFavorite(false);
     } else {
       // Si "isFavorite" es false y se hace clic, se añade la lista como favorito.
       // El icono de corazon se muestra rellenado
-      // console.log("add fav");
+      console.log("add fav");
       createFavorite(list.id);
       setIsFavorite(true);
     }
   };
+
+  // Se ejecuta al cargar el componente
+  useEffect(() => {
+    // Se establece a true ya que son las listas favoritas
+    setIsFavorite(false);
+  }, []);
 
   return (
     <>

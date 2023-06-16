@@ -16,6 +16,7 @@ import {
   TableContainer,
   IconButton,
   Flex,
+  useToast,
 } from "@chakra-ui/react";
 import { BsBoxArrowUpRight, BsTrash, BsArrowLeft } from "react-icons/bs";
 
@@ -27,6 +28,7 @@ export default function ListContentPage() {
   const userLogged = useContext(AuthContext); // Obtener el usuario logueado
   const { list, getList } = useLists();
   const { getRelationWordList, words, deleteWord } = useWords();
+  const toast = useToast(); // Para usar el toast de chackra-ui
 
   const { listId } = useParams(); // Obtener listId desde la url
 
@@ -38,6 +40,15 @@ export default function ListContentPage() {
   // se pasa el wordId que corresponde al id de la relacion
   const handleDelete = (wordId) => {
     deleteWord(wordId);
+
+    // Si la palabra se ha eliminado correctamente se muestra un toast
+    toast({
+      title: "Palabra eliminada.",
+      description: "La palabra ha sido eliminada correctamente de la lista.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   useEffect(() => {

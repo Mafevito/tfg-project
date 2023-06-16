@@ -40,8 +40,6 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault(); // para evitar que la pag se recargue
 
-    console.log(formValues);
-
     // Desestructuracion de formValues
     const { name, email, username, password } = formValues;
 
@@ -65,6 +63,7 @@ function RegisterPage() {
                 placeholder="Introduce tu nombre"
                 value={formValues.name}
                 onChange={handleInputChange}
+                focusBorderColor="#369496"
               />
             </FormControl>
             <FormControl id="email" isRequired>
@@ -75,6 +74,7 @@ function RegisterPage() {
                 placeholder="Introduce tu email"
                 value={formValues.email}
                 onChange={handleInputChange}
+                focusBorderColor="#369496"
               />
             </FormControl>
             <FormControl id="username">
@@ -85,6 +85,7 @@ function RegisterPage() {
                 placeholder="Introduce tu nombre de usuario"
                 value={formValues.username}
                 onChange={handleInputChange}
+                focusBorderColor="#369496"
               />
             </FormControl>
             <FormControl id="password" isRequired>
@@ -96,6 +97,7 @@ function RegisterPage() {
                   placeholder="Introduce una contraseña"
                   value={formValues.password}
                   onChange={handleInputChange}
+                  focusBorderColor="#369496"
                 />
                 <InputRightElement h={"full"}>
                   <Button

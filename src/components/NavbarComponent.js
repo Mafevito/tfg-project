@@ -7,24 +7,17 @@ import {
   StackDivider,
   Text,
   Container,
-  Box,
-  Avatar,
   Button,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
   MenuDivider,
-  useDisclosure,
-  useColorModeValue,
-  Stack,
-  useColorMode,
   Center,
+  IconButton,
 } from "@chakra-ui/react";
-import { Outlet, Link as RouteLink, useNavigate } from "react-router-dom";
-import { createContext, useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { supabase } from "../supabase/supabase";
+import { FaUserCircle } from "react-icons/fa";
+import { Outlet, Link as RouteLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const NavLink = ({ text }) => (
@@ -34,34 +27,41 @@ const NavLink = ({ text }) => (
 );
 
 export default function NavbarComponent() {
-  // const userLogged = useContext(AuthContext);
-  // console.log(userLogged);
-  // console.log(userLogged.user);
-
-  const navigate = useNavigate();
-
   // Para obtener la funcion de servicio Auth de Supabase desde AuthContext
   const { logoutUser, user } = useAuth();
-
   console.log(user);
 
   return (
     <Container maxW="1200px">
-      <Flex as="nav" p="20px" mb="80px" alignItems="center" bg="white">
-        <Heading as="h1">
-          <RouteLink to="/">
-            <NavLink text="LOGO" />
-          </RouteLink>
-        </Heading>
+      <Flex
+        as="nav"
+        p="20px"
+        mb="80px"
+        alignItems="center"
+        bg="white"
+        justifyContent="space-between"
+        direction={{ base: "column", md: "row" }}
+      >
+        {user ? (
+          <Heading as="h1">
+            <RouteLink to="/dashboard">
+              <NavLink text="IMACHAI" />
+            </RouteLink>
+          </Heading>
+        ) : (
+          <Heading as="h1">
+            <RouteLink to="/">
+              <NavLink text="IMACHAI" />
+            </RouteLink>
+          </Heading>
+        )}
         <Spacer />
-
-        {/* {userLogged.user != null ? <p>si hay user</p> : <p>no hay user</p>} */}
 
         {/* Segun si hay user logueado se muestra un menu u otro */}
         {user ? (
           <HStack direction={"row"} spacing={7}>
             <RouteLink to="dashboard">
-              <NavLink text="Inicio" />
+              <NavLink text="Buscador" />
             </RouteLink>
             <RouteLink to="/explorar-listas">
               <NavLink text="Explorar listas" />
@@ -75,22 +75,18 @@ export default function NavbarComponent() {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar
-                  size={"sm"}
-                  src={"https://avatars.dicebear.com/api/male/username.svg"}
+                <IconButton
+                  aria-label="Search database"
+                  colorScheme="white"
+                  color="gray.500"
+                  fontSize="30px"
+                  icon={<FaUserCircle />}
                 />
               </MenuButton>
               <MenuList alignItems={"center"}>
                 <br />
                 <Center>
-                  <Avatar
-                    size={"2xl"}
-                    src={"https://avatars.dicebear.com/api/male/username.svg"}
-                  />
-                </Center>
-                <br />
-                <Center>
-                  <p>Username</p>
+                  <p>{user.user.user_metadata.name}</p>
                 </Center>
                 <br />
                 <MenuDivider />
@@ -101,7 +97,9 @@ export default function NavbarComponent() {
                   </MenuItem>
                 </RouteLink>
 
-                <MenuItem onClick={logoutUser}>Cerrar sesión</MenuItem>
+                <MenuItem onClick={logoutUser} fontSize="lg">
+                  Cerrar sesión
+                </MenuItem>
               </MenuList>
             </Menu>
           </HStack>

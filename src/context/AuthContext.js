@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
       console.log("user se ha creado correctamente");
       //console.log(data);
 
-      navigate("/login", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       console.log(error);
 

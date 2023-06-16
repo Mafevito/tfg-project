@@ -28,8 +28,15 @@ export default function ProfileUserEditFormComponent() {
   return (
     <Box>
       <Stack bg={"gray.50"} rounded={"xl"} p={{ base: 4, sm: 6, md: 8 }}>
-        <Flex minWidth="max-content" alignItems="center" gap="2" mb="30px">
-          <Box p="2" align="left">
+        <Flex
+          minWidth="max-content"
+          alignItems="center"
+          gap="2"
+          mb="30px"
+          justifyContent="space-between"
+          direction={{ base: "column", md: "row" }}
+        >
+          <Box p="2">
             <Heading as="h4" size="md" mb="5px">
               {userLogged.user.user.user_metadata.name}
             </Heading>
@@ -40,7 +47,7 @@ export default function ProfileUserEditFormComponent() {
               </Text>
             </HStack>
           </Box>
-          <Spacer />
+
           <Button
             colorScheme="teal"
             size="md"
@@ -49,18 +56,17 @@ export default function ProfileUserEditFormComponent() {
           >
             Editar perfil
           </Button>
-
-          <Modal isOpen={isOpen} onClose={onClose} isCentered>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Editar datos de usuario.</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <UserDataFormEditComponent />
-              </ModalBody>
-            </ModalContent>
-          </Modal>
         </Flex>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Editar datos de usuario.</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <UserDataFormEditComponent />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </Stack>
     </Box>
   );

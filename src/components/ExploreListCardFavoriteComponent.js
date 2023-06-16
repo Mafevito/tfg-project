@@ -12,11 +12,11 @@ export default function ListCardFavoriteComponent({ list }) {
     // Si "isFavorite" es true y se hace clic, se quita la lista como favorito.
     // El icono de corazon se muestra sin rellenar.
     if (isfavorite) {
-      // console.log("quitar fav");
+      console.log("quitar fav");
       deleteFavorite(list.id);
       setIsFavorite(false);
     } else {
-      // console.log("add fav");
+      console.log("add fav");
       createFavorite(list.id);
       setIsFavorite(true);
     }

@@ -1,5 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
 import NavbarComponent from "../components/NavbarComponent";
 import HomePage from "../pages/HomePage";
@@ -10,49 +9,9 @@ import ProfilePage from "../pages/ProfilePage";
 import ListContentPage from "../pages/ListContentPage";
 import ExploreListsPage from "../pages/ExploreListsPage";
 import WordPage from "../pages/WordPage";
-
-import { clientsupabase } from "../supabase/supabase";
+import FooterComponent from "../components/FooterComponent";
 
 function AppRouter() {
-  // Instanciar para poder usarlo
-  const navigate = useNavigate();
-
-  // Estado que va a guardar el user logueado
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Redirigir al usuario a una pag segun si esta logueado o no
-  useEffect(() => {
-    // const getUser = async () => {
-    //   try {
-    //     // Llama a la funcion de 'getUser' de Supabase
-    //     const {
-    //       data: { user },
-    //       error,
-    //     } = await clientsupabase.auth.getUser();
-    //     if (error) throw error;
-    //     if (user) {
-    //       setIsAuthenticated(true);
-    //       console.log(user);
-    //       console.log(isAuthenticated);
-    //       navigate("/dashboard");
-    //     } else {
-    //       console.log("no hay user");
-    //       navigate("/login");
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // getUser();
-    // const result = clientsupabase.auth.getUser();
-    // // Si no se obtiene un resultado enviar a pag '/login'
-    // if (!result) {
-    //   navigate("/login");
-    // } else {
-    //   navigate("/dashboard");
-    // }
-  });
-
   return (
     <>
       <Routes>
@@ -67,6 +26,8 @@ function AppRouter() {
           <Route path="lista/:listId/word/:word" element={<WordPage />} />
         </Route>
       </Routes>
+
+      <FooterComponent />
     </>
   );
 }

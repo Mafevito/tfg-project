@@ -21,6 +21,7 @@ import {
   IconButton,
   Tag,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { BsPencilSquare, BsTrash, BsBoxArrowUpRight } from "react-icons/bs";
@@ -33,12 +34,22 @@ export default function ListCardComponent({ list }) {
   const [listName, setListName] = useState("");
   const [isPublica, setIsPublica] = useState();
   const [isChecked, setIsChecked] = useState(false);
+  const toast = useToast(); // Para usar el toast de chackra-ui
 
   // Funciones para eliminar y editar una lista en concreto que se muestra en "ProfilePage"
   const { deleteList, updateList } = useLists();
 
   const handleDelete = () => {
     deleteList(list.id);
+
+    // Si la lista se ha eliminado correctamente se muestra un toast
+    toast({
+      title: "Lista eliminada.",
+      description: "La lista ha sido eliminada correctamente.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   const handleOnChange = () => {
@@ -47,6 +58,15 @@ export default function ListCardComponent({ list }) {
 
   const handleUpdate = () => {
     updateList(list.id, { name: listName, publica: isChecked });
+
+    // Si la lista se ha editado correctamente se muestra un toast
+    toast({
+      title: "Lista editada.",
+      description: "La lista ha sido editada correctamente.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   useEffect(() => {
@@ -73,7 +93,7 @@ export default function ListCardComponent({ list }) {
 
         <Box mb="20px" mt="10px">
           {list.publica === true ? (
-            <Tag colorScheme="green">Publica</Tag>
+            <Tag colorScheme="yellow">Publica</Tag>
           ) : (
             <Tag>Privada</Tag>
           )}
@@ -156,7 +176,7 @@ export default function ListCardComponent({ list }) {
                 <Text>
                   Tipo:{" "}
                   {isPublica ? (
-                    <Tag colorScheme="green">Publica</Tag>
+                    <Tag colorScheme="yellow">Publica</Tag>
                   ) : (
                     <Tag>Privada</Tag>
                   )}

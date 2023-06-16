@@ -57,20 +57,20 @@ export default function ContentWordPage({ result }) {
       //console.log("listId obtenido");
       checkExist(listId, savedWord.word);
 
-      if (wordExist) {
-        toast({
-          title: "La palabra ya existe en la lista.",
-          description: "Prueba a agregar la palabra a otra lista.",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      } else {
+      if (!wordExist) {
         createWord(listId, savedWord);
         toast({
           title: "Palabra agregada correctamente.",
           description: "La palabra ha sido agregada correctamente a la lista.",
           status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "La palabra ya existe en la lista.",
+          description: "Prueba a agregar la palabra a otra lista.",
+          status: "error",
           duration: 9000,
           isClosable: true,
         });
@@ -140,21 +140,25 @@ export default function ContentWordPage({ result }) {
                   <PopoverCloseButton />
                   <PopoverHeader>Añadir a lista.</PopoverHeader>
                   <PopoverBody>
-                    <Stack>
-                      {lists.map((list) => (
-                        <>
-                          <Button
-                            variant="ghost"
-                            justifyContent="space-between"
-                            fontWeight="normal"
-                            fontSize="sm"
-                            onClick={() => handleSaveWord(list.id)}
-                          >
-                            {list.name}
-                          </Button>
-                        </>
-                      ))}
-                    </Stack>
+                    {lists.length > 0 ? (
+                      <Stack>
+                        {lists.map((list) => (
+                          <>
+                            <Button
+                              variant="ghost"
+                              justifyContent="space-between"
+                              fontWeight="normal"
+                              fontSize="sm"
+                              onClick={() => handleSaveWord(list.id)}
+                            >
+                              {list.name}
+                            </Button>
+                          </>
+                        ))}
+                      </Stack>
+                    ) : (
+                      "Aún no tienes listas, puedes crear una desde tu perfil."
+                    )}
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
